@@ -33,9 +33,14 @@ class ECG {
                     float n_bits, std::vector<std::vector<int> > output, 
 	                std::string output_file);
   
-		void compute_RR_intervals(std::vector<int> poses, 
-                                  std::vector<std::vector<float> > &RR_intervals);  
+		void compute_RR_intervals(std::vector<int> poses, std::vector<float> &pre_R,
+								  std::vector<float> &post_R, std::vector<float> &local_R,
+								  std::vector<float> &global_R);  
 
+							//(std::vector<float>beat, 
+		void compute_feature(float pre_R, float post_R, float local_R, float global_R, std::vector<float> &feature);
+
+		void resample_freq(std::vector<float> &ecg, float fs_orig, float fs);
 
 	private:
 

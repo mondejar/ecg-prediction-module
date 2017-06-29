@@ -50,34 +50,57 @@ void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 		ecg[i] = (ecg[i] - minA) / (maxA - minA);
 
 
+	// TODO: Re-sample to 360Hz
+	//if(fs != 360)
+	//	resample_freq(&ecg, fs, 360);
+
 	// TODO: Preprocess before feature compute ? filtering?
 
 
 	// Compute RR_intervals information from the full signal
-	std::vector< std::vector<float> > RR_intervals;
+	std::vector<float> pre_R, post_R, local_R, global_R;
 	if(_use_RR_intervals)
-		compute_RR_intervals(r_peaks, RR_intervals);
+		compute_RR_intervals(r_peaks, pre_R, post_R, local_R, global_R);
 
-/*
+
+	/* Display
+	for(int i = 0; i < r_peaks.size(); i++)
+	{
+		std::cout << " Beat: "<< i << std::endl;
+
+		std::cout<< "posR = "<< r_peaks[i] << " preR["<< i <<"] = "<< pre_R[i]<< " postR["<< i <<"] = "<< post_R[i] << " localR["<< i <<"] = "<< local_R[i] << " globalR["<< i <<"] = "<< global_R[i]<< std::endl;
+
+		
+	}*/
+
 	for(int i = 0; i < r_peaks.size(); i++)
 	{
 		//Check if the window can be set on that peak
 		if(r_peaks[i] > _w_l && r_peaks[i] < _w_R)
 		{
-			beat = ecg.begin() + (r_peaks[i] - _w_l), ecg:begin() + (r_peaks[i] + _w_r)
-			compute_feature(beat, RR_intervals, feature)
+			//beat = ecg.begin() + (r_peaks[i] - _w_l), ecg:begin() + (r_peaks[i] + _w_r)
+			std::vector<float> feature;
+							//beat
+			compute_feature(pre_R[i], post_R[i], local_R[i], global_R[i], feature)
+
 
 			// TODO: predict one by one or predict all features together? maybe is more efficient the second
 			predict_beat(feature, prediction)
 
 		}
 	}
-*/
 
 
 	//TODO fprintf .csv file... R_pos, prediction
 
 }
+
+// Resample ecg signal from fs_orig to fs
+void ECG::resample_freq(std::vector<float> &ecg, float fs_orig, float fs)
+{
+	// TODO complete...
+}
+
 
 /*
 Compute RR_intervals from the full signal:
@@ -86,59 +109,56 @@ Compute RR_intervals from the full signal:
 	Local_R: average of 10 previous Pre_R values
 	Global_R: 
 */
-void ECG::compute_RR_intervals(std::vector<int> poses, std::vector<std::vector<float> > &RR_intervals)
+void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<float> &pre_R, std::vector<float> &post_R, std::vector<float> &local_R, std::vector<float> &global_R)
 {
+	// Pre_R and Post_R 
+	pre_R.push_back(0);
+	post_R.push_back(R_poses[1] - R_poses[0]);
 
-/*
-    % Compute RR interval features at patients level!
-    if(compute_RR_interval_feature)
-        pre_R = 0;
-        post_R = R_poses{r}(2) - R_poses{r}(1);
-        local_R = []; % Average of the ten past R intervals
-        global_R = []; % Average of the last 5 minutes of the signal
-        
-        for(i=2:length(R_poses{r})-1)
-            pre_R = [pre_R, R_poses{r}(i) - R_poses{r}(i-1)];
-            post_R = [post_R, R_poses{r}(i+1) - R_poses{r}(i)];
-        end
-        pre_R(1) = pre_R(2);
-        pre_R = [pre_R, R_poses{r}(length(R_poses{r})) - R_poses{r}(length(R_poses{r})-1)];
-        
-        post_R = [post_R, post_R(length(R_poses{r})-1)];
-        
-        % Local R: AVG from past 10 RR intervals
-        for(i=1:length(R_poses{r}))
-            window = i-10:i;
-            valid_window = window > 0;
-            window = window .* valid_window;
-            window = window(window~=0);
-            avg_val = sum(pre_R(window));
-            avg_val = avg_val / (sum(valid_window));
-            
-            local_R = [local_R, avg_val];
-        end
-        
-        % Global R: AVG from past 5 minutes
-        % 360 Hz  5 minutes = 108000 samples;
-        for(i=1:length(R_poses{r}))
-            back = -1;
-            back_length = 0;
-            if(R_poses{r}(i) < 108000)
-                window = 1:i;
-            else
-                while(i+back > 0 && back_length < 108000)
-                    back_length =  R_poses{r}(i) - R_poses{r}(i+back);
-                    back = back -1;
-                end
-                window = max(1,(back+i)):i;
-            end
-            % Considerando distancia maxima hacia atras
-            avg_val = sum(pre_R(window));
-            avg_val = avg_val / length(window);
-            
-            global_R = [global_R, avg_val];
-        end
-*/
+	for(int i= 1; i < R_poses.size() -1; i++)
+	{
+		pre_R.push_back(R_poses[i] - R_poses[i-1]);    
+        post_R.push_back(R_poses[i+1] - R_poses[i]);
+	}    
+
+
+	pre_R[0] = pre_R[1];
+    pre_R.push_back(R_poses[R_poses.size()-1] - R_poses[R_poses.size()-2]);// end
+
+    post_R.push_back(post_R[post_R.size()-1]);
+
+    // Local_R: AVG from past 10 pre_R 
+	int num;
+	float avg_val;
+	for(int i = 0; i < R_poses.size(); i++)
+	{
+		num = 0;
+		avg_val = 0;
+		for(int j = -9; j <= 0; j++)
+		{
+			if(j+i >= 0)
+			{
+				avg_val += pre_R[i+j];
+				num++;
+			}
+		}
+		local_R.push_back( avg_val / (float)num );
+	}
+   
+
+	// Global R AVG: from full past-signal
+	global_R.push_back(pre_R[0]);
+	for(int i = 1; i < R_poses.size(); i++)
+	{
+		num = 0;
+		avg_val = 0;
+		for(int j = 0; j < i; j++)
+			avg_val += pre_R[j];	
+
+		num = i;
+
+		global_R.push_back(avg_val / (float) num);
+	}
 }
 
 /* Given a ecg-beat this function compute the features selected:
@@ -148,8 +168,10 @@ void ECG::compute_RR_intervals(std::vector<int> poses, std::vector<std::vector<f
 		...
 	- Intervals RR
 */
-/*
-void ECG::compute_feature(std::vector<float>beat, std::vector<float> &feature)
+
+
+//std::vector<float>beat, 
+void ECG::compute_feature(float pre_R, float post_R, float local_R, float global_R, std::vector<float> &feature)
 {
 	//Compute feature from beat
 
@@ -160,21 +182,20 @@ void ECG::compute_feature(std::vector<float>beat, std::vector<float> &feature)
 
 	if(_use_RR_intervals)
 	{
-		float pre_R, post_R, local_R, global_R;
-		
-		//feature.push_back(pre_R);
-		//feature.push_back(post_R);
-		//feature.push_back(local_R);
-		//feature.push_back(global_R);
+		feature.push_back(pre_R);
+		feature.push_back(post_R);
+		feature.push_back(local_R);
+		feature.push_back(global_R);
 	}
 }
 
 
 void ECG::predict_beat(feature, prediction)
 {
-
 	// LibSVM call	
 	// svm_predict()
+
+
 }
-*/
+
 
