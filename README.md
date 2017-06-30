@@ -9,7 +9,6 @@ The classes used in this module follow the standard **AAMI-Recomendations**:
 |id| 0| 1|2|3|4|
 
 
-
 # Compilation:
 ```
 mkdir build
@@ -30,8 +29,6 @@ This will create a file *filename.out* that contains:
     r_peak_position_n, class_prediction_n
     
 
-and also print at console.
-
 The input *.csv* file must follow the structure:
 ```
 frequency of signal\n
@@ -44,14 +41,12 @@ signal[1]\n
 signal[N]\n
 ```
 
-
 # Requirements:
 
 ## LibSVM
 To use the trained SVM models and predict the result for new incoming data
 
-Download from:
-....
+Download from: https://www.csie.ntu.edu.tw/~cjlin/libsvm/
 
 Installation:
 Simply extract the *.zip* folder on the same dir.
@@ -64,36 +59,19 @@ _________________
 Test sample for calling prediction functions from *ECG.cpp*.
 The signal is loaded from a *.csv file* recived from command line arguments.
 
-
 ### ECG.cpp
 _________________
+This file contains the function for compute the features for inconming signals an return an answear for each beat. The output is stored in a text file with the following structure:
 
 
-functions... example of calls...
+    r_peak_position_1, class_prediction_1
+    ...
+    r_peak_position_n, class_prediction_n
 
-
-input: (float* signal, int Hz, int max_A, int min_A, int num_bits)
-
-Steps:
-
-1. clean signal 	   
-
-2. pam_tomkins: Detect R peaks 
-(momentaneamente exported code from Matlab to C++)
-(TODO: perform the conversion)
-
-3. load libSVM
-
-( From matlab o exportar las matrices de entrenamiento de matlab y entrenar directamente en C++... en la etapa final entrenar con todos los datos!)
-
-
-Output:
-
-int[][]: posX, class
 
 
 ### QRS_detection.cpp
 _________________
-Function for QRS detection. 
+Function for QRS detection of each beat from a full ECG signal. 
 
 NOTE: This function will be updated!
