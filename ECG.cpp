@@ -11,6 +11,8 @@
 // Constructor
 ECG::ECG (std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w)
 {
+	n_classes = 4;
+
 	_w_l = w_l;
 	_w_r = w_r;
 	_svm_model_name = svm_model_name;
@@ -18,15 +20,13 @@ ECG::ECG (std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w)
 	_use_RR_intervals = u_RR_i;
 	_use_wavelets = u_w;
 
-	load_SVM_model();
+	// Load SVM models one-vs-one 
+	for(int m = 0; m < 6; m++){
+		std::cout<< " model name "<< (_svm_model_name + std::to_string(m) + ".model"  ) << std::endl;
+		models.push_back(svm_load_model( (_svm_model_name + std::to_string(m) + ".model"  ).c_str()));
+	}
 }
 
-
-bool ECG::load_SVM_model()
-{
-	//_svm_model_name
-	return true;
-}
 
 /* 
 Given an ecg signal detect the R-pose of each beat and return a prediction
@@ -38,8 +38,7 @@ output:
 	output[r_peak_pos, class_output]
 */
 void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
-			          float n_bits, std::vector<std::vector<int> > output, 
-                      std::string output_file)
+			          float n_bits, std::string output_filename)
 {
 	// TODO: Preprocess for QRS detection? Band-filtering?
 	std::vector<int> r_peaks;
@@ -56,42 +55,45 @@ void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 
 	// TODO: Preprocess before feature compute ? filtering?
 
-
 	// Compute RR_intervals information from the full signal
 	std::vector<float> pre_R, post_R, local_R, global_R;
 	if(_use_RR_intervals)
 		compute_RR_intervals(r_peaks, pre_R, post_R, local_R, global_R);
 
+	int prediction; 
 
-	/* Display
-	for(int i = 0; i < r_peaks.size(); i++)
-	{
-		std::cout << " Beat: "<< i << std::endl;
-
-		std::cout<< "posR = "<< r_peaks[i] << " preR["<< i <<"] = "<< pre_R[i]<< " postR["<< i <<"] = "<< post_R[i] << " localR["<< i <<"] = "<< local_R[i] << " globalR["<< i <<"] = "<< global_R[i]<< std::endl;
-
-		
-	}*/
+	// Write results to a file
+	std::ofstream file_out;
+  	file_out.open (output_filename.c_str());
+  	
 
 	for(int i = 0; i < r_peaks.size(); i++)
 	{
 		//Check if the window can be set on that peak
-		if(r_peaks[i] > _w_l && r_peaks[i] < _w_R)
+		if(r_peaks[i] > _w_l && r_peaks[i] < ecg.size() - _w_r)
 		{
+			prediction = 0;
 			//beat = ecg.begin() + (r_peaks[i] - _w_l), ecg:begin() + (r_peaks[i] + _w_r)
-			std::vector<float> feature;
-							//beat
-			compute_feature(pre_R[i], post_R[i], local_R[i], global_R[i], feature)
+			//std::vector<float> feature;
+			svm_node *features;
+
+			//beat
+			features = compute_feature(pre_R[i], post_R[i], local_R[i], global_R[i]);
+
+			// TODO: predict one by one or predict all features together?
+			//       maybe is more efficient the second
+			prediction = predict_beat_one_vs_one_SVM(features);
+
+			// Write results to a file
+	  		file_out << r_peaks[i] << ", "<< prediction<< "\n";
 
 
-			// TODO: predict one by one or predict all features together? maybe is more efficient the second
-			predict_beat(feature, prediction)
-
+			std::cout<< "Beat: "<< i << " R-peak position: "<< r_peaks[i]<< " prediction: "<< prediction << std::endl;
+			free(features);
 		}
 	}
-
-
-	//TODO fprintf .csv file... R_pos, prediction
+	file_out.close();
+	std::cout<< "Results writed at "<< output_filename << std::endl;
 
 }
 
@@ -109,7 +111,9 @@ Compute RR_intervals from the full signal:
 	Local_R: average of 10 previous Pre_R values
 	Global_R: 
 */
-void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<float> &pre_R, std::vector<float> &post_R, std::vector<float> &local_R, std::vector<float> &global_R)
+void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<float> &pre_R,
+							   std::vector<float> &post_R, std::vector<float> &local_R, 
+						       std::vector<float> &global_R)
 {
 	// Pre_R and Post_R 
 	pre_R.push_back(0);
@@ -171,31 +175,92 @@ void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<float> &pre
 
 
 //std::vector<float>beat, 
-void ECG::compute_feature(float pre_R, float post_R, float local_R, float global_R, std::vector<float> &feature)
+svm_node* ECG::compute_feature(float pre_R, float post_R, float local_R, float global_R)
 {
 	//Compute feature from beat
-
 	//TODO: complete...	if(_use_wavelets)
 	//{
 	//	feature.push_back()
 	//}
 
+	//TODO: this value depends on the number of features used!
+	svm_node *features;
+	features = new svm_node[4];
+
+
+	//struct svm_node *x = (struct svm_node *) malloc((4)*sizeof(struct svm_node));
 	if(_use_RR_intervals)
 	{
-		feature.push_back(pre_R);
-		feature.push_back(post_R);
-		feature.push_back(local_R);
-		feature.push_back(global_R);
+		features[0].index = 0; 
+		features[0].value = pre_R;
+		features[1].index = 1; 
+		features[1].value = post_R;
+		features[2].index = 2; 
+		features[2].value = local_R;
+		features[3].index = 3; 
+		features[3].value = global_R;
 	}
+
+	//Standardization
+	//TODO load data
+	double media[4] = {276.2640, 276.2435, 273.9888, 272.5610};
+	double st_desviation[4] = {75.4833, 74.1250, 60.6748, 57.1679};
+
+	for(int i = 0; i < 4; i++)
+		features[i].value  = (features[i].value - media[i] ) / st_desviation[i];
+
+	return features;
 }
 
-
-void ECG::predict_beat(feature, prediction)
+int ECG::predict_beat_one_vs_one_SVM(svm_node *features)
 {
-	// LibSVM call	
-	// svm_predict()
+	double prediction;
+	int predicted_class;
+	double output[n_classes];
+	int index = 0;
 
+	for(int i = 0; i < n_classes; i++)
+		output[i] = 0;
 
+	//TODO: param nr_class for C-SVM
+	for(int k = 0; k < n_classes; k++)
+	{
+		for(int kk = k+1; kk < n_classes; kk++)
+		{
+			//Toy Test prediction
+			prediction = svm_predict(models[index], features);
+			if(prediction == 1)
+				output[k]++;
+			else
+				output[kk]++;
+
+			index++;
+		}
+	}
+
+	int max = 0;
+	for(int i = 0; i < n_classes; i++)
+	{
+		if(output[i] > max)
+			max = output[i];
+	}
+
+	std::vector<int> best_classes;
+	for(int i = 0; i < n_classes; i++)
+	{
+		if(output[i] == max)
+		{
+			best_classes.push_back(i);
+		}
+	}	
+
+	predicted_class = best_classes[0];
+
+	if(best_classes.size() > 1)
+	{
+		if(best_classes[1] > best_classes[0])
+			predicted_class = best_classes[1];
+	}
+
+	return predicted_class;
 }
-
-

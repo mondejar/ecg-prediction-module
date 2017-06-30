@@ -9,7 +9,7 @@
 #include "ECG.h"
 
 // Parameters for the classifier
-std::string svm_model_name = "../svm_models/..."; // full-path to svm model 
+std::string svm_model_name = "../svm_models/svm_ovo_RR_"; // full-path to svm model 
 int w_l = 90;// Window Left of the beat centered on R-peak
 int w_r = 90;// Window Right of the beat centered on R-peak
 
@@ -72,17 +72,10 @@ int main(int argc, char* argv[])
 		std::cout<< " n_bits readed from csv: = "<< n_bits << std::endl;
 		std::cout<< " Signal size from csv: = "<< ecg.size() << std::endl;
 
-		std::vector<std::vector<int> > output;
 		ECG* ecg_classifier = new ECG(svm_model_name, w_l, w_r, true, false);
 
 		// Run classifier 
-		ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, output, output_filename);
-
-		// Show Output
-		//	for(int i = 0; i < output.size(); i++)
-		//		std::cout<< "Beat: "<< i << " r_pose: "<< output[i][0] << " \
-						 prediction: "<< output[i][1] << std::endl;	
-	
+		ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, output_filename);
 		delete ecg_classifier;
 	}
 	else
