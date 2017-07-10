@@ -54,14 +54,16 @@ Simply extract the *.zip* folder on the same dir.
 ## Boost libraries
 If the input signal has a different frequency sampling of 360 the *resample* function that uses the Boost libraries is needed.
 
-http://www.boost.org/
 
-Extract the folder and simply:
+
+Download the folder from the website http://www.boost.org/ and extract the folder. Then
+on that directory execute:
+
 ```
 ./bootstrap.sh
 ```
 
-Then:
+and finally:
 ```
 sudo ./b2 install 
 ```
