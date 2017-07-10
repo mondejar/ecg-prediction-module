@@ -1,4 +1,5 @@
-// Code extracted from: https://github.com/blakeMilner/real_time_QRS_detection/blob/master/QRS_test.c
+// Original code extracted from: https://github.com/blakeMilner/real_time_QRS_detection/blob/master/QRS_test.c
+// Based on the algorithm proposed in: HC Chen, SW Chen, "A Moving Average based Filtering System with its Application to Real-time QRS Detection", Computers in Cardiology, 2003.
 
 #include "QRS_detection.h"
 
@@ -6,7 +7,7 @@ typedef int boolean;
 #define true  1
 #define false 0
 
-#define M 				5
+#define M 				30   
 #define N 				30
 #define winSize			250
 #define HP_CONSTANT		((float) 1 / (float) M)

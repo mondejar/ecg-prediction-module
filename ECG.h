@@ -37,7 +37,7 @@ class ECG {
 							//(std::vector<float>beat, 
 		svm_node *compute_feature(float pre_R, float post_R, float local_R, float global_R);
 
-		void resample_freq(std::vector<float> &ecg, float fs_orig, float fs);
+		void resample_freq(std::vector<float> &ecg, float fs_or, float fs);
 
 	private:
 		std::vector<svm_model*> models;

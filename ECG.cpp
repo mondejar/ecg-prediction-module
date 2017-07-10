@@ -40,18 +40,18 @@ output:
 void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 			          float n_bits, std::string output_filename)
 {
-	// TODO: Preprocess for QRS detection? Band-filtering?
+
+
+	// TODO: Re-sample to 360Hz
+	//if(fs != 360)
+	//	resample_freq(&ecg, fs, 360);
+
 	std::vector<int> r_peaks;
 	detect_QRS(ecg, r_peaks);
 
 	// Normalization min_A - max_A to range [0-1]
 	for(int i = 0; i < ecg.size(); i++)
 		ecg[i] = (ecg[i] - minA) / (maxA - minA);
-
-
-	// TODO: Re-sample to 360Hz
-	//if(fs != 360)
-	//	resample_freq(&ecg, fs, 360);
 
 	// TODO: Preprocess before feature compute ? filtering?
 
@@ -98,9 +98,10 @@ void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 }
 
 // Resample ecg signal from fs_orig to fs
-void ECG::resample_freq(std::vector<float> &ecg, float fs_orig, float fs)
+void ECG::resample_freq(std::vector<float> &ecg, float fs_or, float fs)
 {
-	// TODO complete...
+//	std::vector<float> ecg_or;
+//	ecg_or = ecg;
 }
 
 
