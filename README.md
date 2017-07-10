@@ -20,7 +20,7 @@ make
 # Example of use:
 
 ```
-main ../data/220.csv
+example ../data/220.csv
 ```
 This will create a file *filename.out* that contains:
 
@@ -75,15 +75,41 @@ _________________
 Test sample for calling prediction functions from *ECG.cpp*.
 The signal is loaded from a *.csv file* recived from command line arguments.
 
-### ECG.cpp
-_________________
-This file contains the function for compute the features for inconming signals an return an answear for each beat. The output is stored in a text file with the following structure:
+The output is stored in a text file with the following structure:
 
 
     r_peak_position_1, class_prediction_1
     ...
     r_peak_position_n, class_prediction_n
 
+### ECG.cpp
+_________________
+This file contains the function for compute the features for inconming signals an return an answear for each beat. 
+NOTE: The signals with different frecuency sampling than 360 will be resampled and the analyzed.
+
+Just created and object of the class *ecg* and call the method *predict_ecg*:
+
+```cpp
+#include "ecg.h"
+
+// Read ECG signal 
+
+...
+// Run classifier 
+
+ECG* ecg_classifier = new ECG(svm_model_name, w_l, w_r, true, false);
+ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
+delete ecg_classifier;
+```
+
+ecg.h
+```cpp
+...
+//Constructor
+ECG(std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w);
+
+void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA, float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
+```
 
 
 ### QRS_detection.cpp
