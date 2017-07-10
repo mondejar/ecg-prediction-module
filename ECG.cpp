@@ -8,17 +8,18 @@
 
 #include "ECG.h"
 
+
 // Constructor
-ECG::ECG (std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w)
+ECG::ECG ()
 {
 	n_classes = 4;
 
-	_w_l = w_l;
-	_w_r = w_r;
-	_svm_model_name = svm_model_name;
+	_w_l = 90;// Window Left of the beat centered on R-peak
+	_w_r = 90;// Window Right of the beat centered on R-peak
+	_svm_model_name = "../svm_models/svm_ovo_RR_"; // full-path to svm model 
 
-	_use_RR_intervals = u_RR_i;
-	_use_wavelets = u_w;
+	_use_RR_intervals = true;
+	_use_wavelets = false;
 
 	// Load SVM models one-vs-one 
 	for(int m = 0; m < 6; m++){
@@ -26,6 +27,7 @@ ECG::ECG (std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w)
 		models.push_back(svm_load_model( (_svm_model_name + std::to_string(m) + ".model"  ).c_str()));
 	}
 }
+
 
 
 /* 
@@ -40,7 +42,6 @@ output:
 void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
 			          float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions)
 {
-
 	// Re-sample to 360Hz
 	if(fs != 360)
 	{
@@ -86,9 +87,7 @@ void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA
 			free(features);
 		}
 	}
-
 }
-
 
 /*
 Compute RR_intervals from the full signal:

@@ -28,7 +28,6 @@ This will create a file *filename.out* that contains:
     ...
     r_peak_position_n, class_prediction_n
     
-
 The input *.csv* file must follow the structure:
 ```
 frequency of signal\n
@@ -96,9 +95,8 @@ Just created and object of the class *ecg* and call the method *predict_ecg*:
 
 ...
 // Run classifier 
-
-ECG* ecg_classifier = new ECG(svm_model_name, w_l, w_r, true, false);
-ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
+ECG* ecg_classifier = new ECG();
+ecg_classifier.predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
 delete ecg_classifier;
 ```
 
@@ -106,9 +104,22 @@ ecg.h
 ```cpp
 ...
 //Constructor
-ECG(std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w);
+ECG();
 
+//Description: Function for predict the state of each beat given an ECG signal
+//Params:
+    //Input:
+    //ecg: contains the ECG signal of MLII (if fs!=360, ecg will be resampled)
+    //fs: frecuency sampling of the signals
+    //minA: minimum Amplitude value
+    //maxA: maximum Amplitude value
+    //n_bits: number of bits used for represent the signal
+    //
+    //Output:
+    //r_peaks: a vector that contains the values of each R peak detection
+    //predictions: a vector that containst the state of each beat (N, SVEB, VEB, F, Q) [0-4]
 void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA, float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
+
 ```
 
 

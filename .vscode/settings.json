@@ -29,6 +29,9 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "feature_tests.c": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "svmtrain.c": "cpp",
+        "svm-predict.c": "cpp",
+        "svm-train.c": "cpp"
     }
 }

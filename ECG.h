@@ -20,14 +20,27 @@
 #include <vector>
 #include "QRS_detection.h"
 
+
 class ECG {
 
 	public:
 		//Constructor
-		ECG(std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w);
+		ECG();
 
-		void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
-                     float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
+		//Description: Function for predict the state of each beat given an ECG signal
+		//Params:
+			//Input:
+			//ecg: contains the ECG signal of MLII (if fs!=360, ecg will be resampled)
+			//fs: frecuency sampling of the signals
+			//minA: minimum Amplitude value
+			//maxA: maximum Amplitude value
+			//n_bits: number of bits used for represent the signal
+			//
+			//Output:
+			//r_peaks: a vector that contains the values of each R peak detection
+			//predictions: a vector that containst the state of each beat (N, SVEB, VEB, F, Q) [0-4]
+		void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA, float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
+
 	private:
 
 		int predict_beat_one_vs_one_SVM(svm_node* feature);
