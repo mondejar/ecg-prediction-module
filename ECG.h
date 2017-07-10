@@ -11,6 +11,7 @@
 #define ECG_H
 
 #include "libsvm-3.22/svm.h"
+#include "resample/resample.h"
 #include <fstream>
 #include <string>
 #include <exception>
@@ -25,21 +26,20 @@ class ECG {
 		//Constructor
 		ECG(std::string svm_model_name, int w_l, int w_r, bool u_RR_i, bool u_w);
 
-		void predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
-                    float n_bits, std::string output_filename);
+		void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
+                     float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
+	private:
 
 		int predict_beat_one_vs_one_SVM(svm_node* feature);
   
-		void compute_RR_intervals(std::vector<int> poses, std::vector<float> &pre_R,
-								  std::vector<float> &post_R, std::vector<float> &local_R,
-								  std::vector<float> &global_R);  
+		void compute_RR_intervals(std::vector<int> poses, std::vector<double> &pre_R,
+								  std::vector<double> &post_R, std::vector<double> &local_R,
+								  std::vector<double> &global_R);  
 
-							//(std::vector<float>beat, 
+							//(std::vector<double>beat, 
 		svm_node *compute_feature(float pre_R, float post_R, float local_R, float global_R);
 
-		void resample_freq(std::vector<float> &ecg, float fs_or, float fs);
-
-	private:
+		// Variables
 		std::vector<svm_model*> models;
 		svm_model *model;
 
@@ -47,7 +47,7 @@ class ECG {
 		std::string _svm_model_name;
 		int _w_l, _w_r;
 		std::vector<int> r_peaks;
-		std::vector<float> ecg;
+		std::vector<double> ecg;
 		bool _use_wavelets, _use_RR_intervals;
 };
 

@@ -51,10 +51,24 @@ Download from: https://www.csie.ntu.edu.tw/~cjlin/libsvm/
 Installation:
 Simply extract the *.zip* folder on the same dir.
 
+## Boost libraries
+If the input signal has a different frequency sampling of 360 the *resample* function that uses the Boost libraries is needed.
+
+http://www.boost.org/
+
+Extract the folder and simply:
+```
+./bootstrap.sh
+```
+
+Then:
+```
+sudo ./b2 install 
+```
 
 # Files
 
-### main.cpp
+### example.cpp
 _________________
 Test sample for calling prediction functions from *ECG.cpp*.
 The signal is loaded from a *.csv file* recived from command line arguments.

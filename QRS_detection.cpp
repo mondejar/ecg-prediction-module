@@ -10,35 +10,35 @@ typedef int boolean;
 #define M 				30   
 #define N 				30
 #define winSize			250
-#define HP_CONSTANT		((float) 1 / (float) M)
+#define HP_CONSTANT		((double) 1 / (double) M)
 
 
-void detect_QRS(std::vector<float> ecg, std::vector<int> &result) {
+void detect_QRS(std::vector<double> ecg, std::vector<int> &result) {
 	// circular buffer for input ecg signal
 	// we need to keep a history of M + 1 samples for HP filter
-	float ecg_buff[M + 1] = {0};
+	double ecg_buff[M + 1] = {0};
 	int ecg_buff_WR_idx = 0;
 	int ecg_buff_RD_idx = 0;
 	
 	// circular buffer for input ecg signal
 	// we need to keep a history of N+1 samples for LP filter
-	float hp_buff[N + 1] = {0};
+	double hp_buff[N + 1] = {0};
 	int hp_buff_WR_idx = 0;
 	int hp_buff_RD_idx = 0;
 	
 	// LP filter outputs a single point for every input point
 	// This goes straight to adaptive filtering for eval
-	float next_eval_pt = 0;
+	double next_eval_pt = 0;
 	
 	// running sums for HP and LP filters, values shifted in FILO
-	float hp_sum = 0;
-	float lp_sum = 0;
+	double hp_sum = 0;
+	double lp_sum = 0;
 	
 	// parameters for adaptive thresholding
 	double treshold = 0;
 	boolean triggered = false;
 	int trig_time = 0;
-	float win_max = 0;
+	double win_max = 0;
 	int win_idx = 0;
 	
 	int i = 0;
@@ -65,8 +65,8 @@ void detect_QRS(std::vector<float> ecg, std::vector<int> &result) {
 			
 			hp_sum -= ecg_buff[tmp];
 			
-			float y1 = 0;
-			float y2 = 0;
+			double y1 = 0;
+			double y2 = 0;
 			
 			tmp = (ecg_buff_RD_idx - ((M+1)/2));
 			if(tmp < 0) tmp += M + 1;
@@ -89,11 +89,8 @@ void detect_QRS(std::vector<float> ecg, std::vector<int> &result) {
 		hp_buff_WR_idx %= (N+1);
 		
 		/* Low pass filtering */
-		
 		// shift in new sample from high pass filter
 		lp_sum += hp_buff[hp_buff_RD_idx] * hp_buff[hp_buff_RD_idx];
-		
-
 
 		if(i < N){
 			// first fill buffer with enough points for LP filter
@@ -152,7 +149,7 @@ void detect_QRS(std::vector<float> ecg, std::vector<int> &result) {
 			
 			// forgetting factor - 
 			// rate at which we forget old observations
-			double alpha = 0.01 + ( ((float) rand() / (float) RAND_MAX) * ((0.1 - 0.01)));
+			double alpha = 0.01 + ( ((double) rand() / (double) RAND_MAX) * ((0.1 - 0.01)));
 			
 			treshold = alpha * gamma * win_max + (1 - alpha) * treshold;
 			

@@ -15,7 +15,7 @@ int w_r = 90;// Window Right of the beat centered on R-peak
 
 
 /// Load file .csv and push the data into std::vector ecg
-bool load_signal(std::vector<float> &ecg, float &fs, float &minA, float &maxA, 
+bool load_signal(std::vector<double> &ecg, float &fs, float &minA, float &maxA, 
 				 int &n_bits, std::string filename)
 {
 	//Check that filename exists
@@ -58,12 +58,13 @@ int main(int argc, char* argv[])
 		return 0;	
 	}
 
-	std::vector<float> ecg;
+	std::vector<double> ecg;
 	float fs, minA, maxA;
 	int n_bits;
 	// Load signal given by the .csv file 
 	if(load_signal(ecg, fs, minA, maxA, n_bits, argv[1]))
 	{
+		std::vector<int> r_peaks, predictions;
 		std::string output_filename = std::string(argv[1]) + ".out";
 
 		std::cout<< " fs readed from csv: = "<< fs << std::endl;
@@ -72,11 +73,25 @@ int main(int argc, char* argv[])
 		std::cout<< " n_bits readed from csv: = "<< n_bits << std::endl;
 		std::cout<< " Signal size from csv: = "<< ecg.size() << std::endl;
 
-		ECG* ecg_classifier = new ECG(svm_model_name, w_l, w_r, true, false);
-
+		////////////////////////////////
 		// Run classifier 
-		ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, output_filename);
+		////////////////////////////////
+		ECG* ecg_classifier = new ECG(svm_model_name, w_l, w_r, true, false);
+		ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
 		delete ecg_classifier;
+
+		// Write results to a file
+		std::ofstream file_out;
+  		file_out.open (output_filename.c_str());
+		
+		for(int i = 0; i < r_peaks.size(); i++)
+		{
+	  		file_out << r_peaks[i] << ", "<< predictions[i]<< "\n";
+			std::cout<< "Beat: "<< i << " R-peak position: "<< r_peaks[i]<< " prediction: "<< predictions[i] << std::endl;
+		}
+		file_out.close();
+		std::cout<< "File output created "<< output_filename << std::endl;
+
 	}
 	else
 		std::cout<< "Error: an error ocurred file not open" << std::endl;

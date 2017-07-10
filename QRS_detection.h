@@ -5,4 +5,4 @@
 #include <stdlib.h>  
 #include <vector>
 
-void detect_QRS(std::vector<float> ecg, std::vector<int> &result);
+void detect_QRS(std::vector<double> ecg, std::vector<int> &result);

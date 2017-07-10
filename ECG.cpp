@@ -37,16 +37,21 @@ R_pos (x-axis from signal), class [0-4]
 output:
 	output[r_peak_pos, class_output]
 */
-void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
-			          float n_bits, std::string output_filename)
+void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
+			          float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions)
 {
 
+	// Re-sample to 360Hz
+	if(fs != 360)
+	{
+		std::vector<double> output;
+		resample( 360, fs, ecg, output);
+		//update signal
+		ecg = output;
 
-	// TODO: Re-sample to 360Hz
-	//if(fs != 360)
-	//	resample_freq(&ecg, fs, 360);
+		fs = 360;
+	}
 
-	std::vector<int> r_peaks;
 	detect_QRS(ecg, r_peaks);
 
 	// Normalization min_A - max_A to range [0-1]
@@ -56,17 +61,11 @@ void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 	// TODO: Preprocess before feature compute ? filtering?
 
 	// Compute RR_intervals information from the full signal
-	std::vector<float> pre_R, post_R, local_R, global_R;
+	std::vector<double> pre_R, post_R, local_R, global_R;
 	if(_use_RR_intervals)
 		compute_RR_intervals(r_peaks, pre_R, post_R, local_R, global_R);
 
 	int prediction; 
-
-	// Write results to a file
-	std::ofstream file_out;
-  	file_out.open (output_filename.c_str());
-  	
-
 	for(int i = 0; i < r_peaks.size(); i++)
 	{
 		//Check if the window can be set on that peak
@@ -74,7 +73,7 @@ void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 		{
 			prediction = 0;
 			//beat = ecg.begin() + (r_peaks[i] - _w_l), ecg:begin() + (r_peaks[i] + _w_r)
-			//std::vector<float> feature;
+			//std::vector<double> feature;
 			svm_node *features;
 
 			//beat
@@ -83,25 +82,11 @@ void ECG::predict_ecg(std::vector<float> ecg, float fs, float minA, float maxA,
 			// TODO: predict one by one or predict all features together?
 			//       maybe is more efficient the second
 			prediction = predict_beat_one_vs_one_SVM(features);
-
-			// Write results to a file
-	  		file_out << r_peaks[i] << ", "<< prediction<< "\n";
-
-
-			std::cout<< "Beat: "<< i << " R-peak position: "<< r_peaks[i]<< " prediction: "<< prediction << std::endl;
+			predictions.push_back(prediction);
 			free(features);
 		}
 	}
-	file_out.close();
-	std::cout<< "Results writed at "<< output_filename << std::endl;
 
-}
-
-// Resample ecg signal from fs_orig to fs
-void ECG::resample_freq(std::vector<float> &ecg, float fs_or, float fs)
-{
-//	std::vector<float> ecg_or;
-//	ecg_or = ecg;
 }
 
 
@@ -112,9 +97,9 @@ Compute RR_intervals from the full signal:
 	Local_R: average of 10 previous Pre_R values
 	Global_R: 
 */
-void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<float> &pre_R,
-							   std::vector<float> &post_R, std::vector<float> &local_R, 
-						       std::vector<float> &global_R)
+void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<double> &pre_R,
+							   std::vector<double> &post_R, std::vector<double> &local_R, 
+						       std::vector<double> &global_R)
 {
 	// Pre_R and Post_R 
 	pre_R.push_back(0);
@@ -175,7 +160,7 @@ void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<float> &pre
 */
 
 
-//std::vector<float>beat, 
+//std::vector<double>beat, 
 svm_node* ECG::compute_feature(float pre_R, float post_R, float local_R, float global_R)
 {
 	//Compute feature from beat
