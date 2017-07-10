@@ -30,15 +30,6 @@ ECG::ECG ()
 
 
 
-/* 
-Given an ecg signal detect the R-pose of each beat and return a prediction
-following the standard AAMI-recomendations (N, SVEB, VEB, F, Q) [0-4]
-
-Export the result to a file .csv
-R_pos (x-axis from signal), class [0-4]
-output:
-	output[r_peak_pos, class_output]
-*/
 void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
 			          float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions)
 {
@@ -89,13 +80,6 @@ void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA
 	}
 }
 
-/*
-Compute RR_intervals from the full signal:
-	Pre_R: distance from actual R_pose to previous R_pose
-	Post_R: distance from next R_pose to actual R_pose
-	Local_R: average of 10 previous Pre_R values
-	Global_R: 
-*/
 void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<double> &pre_R,
 							   std::vector<double> &post_R, std::vector<double> &local_R, 
 						       std::vector<double> &global_R)

@@ -43,11 +43,22 @@ class ECG {
 
 	private:
 
+		/* Given a feature representing one beat this method returns 
+		the decision for one-vs-one SVM trained models
+		*/
 		int predict_beat_one_vs_one_SVM(svm_node* feature);
-  
+
+		/*
+		Compute RR_intervals from the full signal:
+			Pre_R: distance from actual R_pose to previous R_pose
+			Post_R: distance from next R_pose to actual R_pose
+			Local_R: average of 10 previous Pre_R values
+			Global_R: 
+		*/  
 		void compute_RR_intervals(std::vector<int> poses, std::vector<double> &pre_R,
 								  std::vector<double> &post_R, std::vector<double> &local_R,
 								  std::vector<double> &global_R);  
+
 
 							//(std::vector<double>beat, 
 		svm_node *compute_feature(float pre_R, float post_R, float local_R, float global_R);

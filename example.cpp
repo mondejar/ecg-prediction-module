@@ -8,8 +8,6 @@
 
 #include "ECG.h"
 
-
-
 /// Load file .csv and push the data into std::vector ecg
 bool load_signal(std::vector<double> &ecg, float &fs, float &minA, float &maxA, 
 				 int &n_bits, std::string filename)
