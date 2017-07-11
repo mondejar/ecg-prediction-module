@@ -14,7 +14,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 
-add_executable (example libsvm-3.22/svm.cpp QRS_detection.cpp resample/resample.cpp ECG.cpp example.cpp)
+add_executable (example src/libsvm-3.22/svm.cpp src/QRS_detection.cpp src/resample/resample.cpp src/ECG.cpp src/example.cpp)
 target_link_libraries (example ${PYTHON_LIBRARIES}) 
 
 # ${Boost_LIBRARIES})

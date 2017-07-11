@@ -8,7 +8,6 @@
 
 #include "ECG.h"
 
-
 // Constructor
 ECG::ECG ()
 {
@@ -27,7 +26,6 @@ ECG::ECG ()
 		models.push_back(svm_load_model( (_svm_model_name + std::to_string(m) + ".model"  ).c_str()));
 	}
 }
-
 
 
 void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
@@ -155,7 +153,6 @@ svm_node* ECG::compute_feature(float pre_R, float post_R, float local_R, float g
 	//TODO: this value depends on the number of features used!
 	svm_node *features;
 	features = new svm_node[4];
-
 
 	//struct svm_node *x = (struct svm_node *) malloc((4)*sizeof(struct svm_node));
 	if(_use_RR_intervals)

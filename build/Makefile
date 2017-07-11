@@ -123,140 +123,140 @@ example/fast:
 	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/build
 .PHONY : example/fast
 
-ECG.o: ECG.cpp.o
+src/ECG.o: src/ECG.cpp.o
 
-.PHONY : ECG.o
-
-# target to build an object file
-ECG.cpp.o:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/ECG.cpp.o
-.PHONY : ECG.cpp.o
-
-ECG.i: ECG.cpp.i
-
-.PHONY : ECG.i
-
-# target to preprocess a source file
-ECG.cpp.i:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/ECG.cpp.i
-.PHONY : ECG.cpp.i
-
-ECG.s: ECG.cpp.s
-
-.PHONY : ECG.s
-
-# target to generate assembly for a file
-ECG.cpp.s:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/ECG.cpp.s
-.PHONY : ECG.cpp.s
-
-QRS_detection.o: QRS_detection.cpp.o
-
-.PHONY : QRS_detection.o
+.PHONY : src/ECG.o
 
 # target to build an object file
-QRS_detection.cpp.o:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/QRS_detection.cpp.o
-.PHONY : QRS_detection.cpp.o
+src/ECG.cpp.o:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/ECG.cpp.o
+.PHONY : src/ECG.cpp.o
 
-QRS_detection.i: QRS_detection.cpp.i
+src/ECG.i: src/ECG.cpp.i
 
-.PHONY : QRS_detection.i
+.PHONY : src/ECG.i
 
 # target to preprocess a source file
-QRS_detection.cpp.i:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/QRS_detection.cpp.i
-.PHONY : QRS_detection.cpp.i
+src/ECG.cpp.i:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/ECG.cpp.i
+.PHONY : src/ECG.cpp.i
 
-QRS_detection.s: QRS_detection.cpp.s
+src/ECG.s: src/ECG.cpp.s
 
-.PHONY : QRS_detection.s
+.PHONY : src/ECG.s
 
 # target to generate assembly for a file
-QRS_detection.cpp.s:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/QRS_detection.cpp.s
-.PHONY : QRS_detection.cpp.s
+src/ECG.cpp.s:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/ECG.cpp.s
+.PHONY : src/ECG.cpp.s
 
-example.o: example.cpp.o
+src/QRS_detection.o: src/QRS_detection.cpp.o
 
-.PHONY : example.o
+.PHONY : src/QRS_detection.o
 
 # target to build an object file
-example.cpp.o:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cpp.o
-.PHONY : example.cpp.o
+src/QRS_detection.cpp.o:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/QRS_detection.cpp.o
+.PHONY : src/QRS_detection.cpp.o
 
-example.i: example.cpp.i
+src/QRS_detection.i: src/QRS_detection.cpp.i
 
-.PHONY : example.i
+.PHONY : src/QRS_detection.i
 
 # target to preprocess a source file
-example.cpp.i:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cpp.i
-.PHONY : example.cpp.i
+src/QRS_detection.cpp.i:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/QRS_detection.cpp.i
+.PHONY : src/QRS_detection.cpp.i
 
-example.s: example.cpp.s
+src/QRS_detection.s: src/QRS_detection.cpp.s
 
-.PHONY : example.s
+.PHONY : src/QRS_detection.s
 
 # target to generate assembly for a file
-example.cpp.s:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cpp.s
-.PHONY : example.cpp.s
+src/QRS_detection.cpp.s:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/QRS_detection.cpp.s
+.PHONY : src/QRS_detection.cpp.s
 
-libsvm-3.22/svm.o: libsvm-3.22/svm.cpp.o
+src/example.o: src/example.cpp.o
 
-.PHONY : libsvm-3.22/svm.o
+.PHONY : src/example.o
 
 # target to build an object file
-libsvm-3.22/svm.cpp.o:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o
-.PHONY : libsvm-3.22/svm.cpp.o
+src/example.cpp.o:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/example.cpp.o
+.PHONY : src/example.cpp.o
 
-libsvm-3.22/svm.i: libsvm-3.22/svm.cpp.i
+src/example.i: src/example.cpp.i
 
-.PHONY : libsvm-3.22/svm.i
+.PHONY : src/example.i
 
 # target to preprocess a source file
-libsvm-3.22/svm.cpp.i:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/libsvm-3.22/svm.cpp.i
-.PHONY : libsvm-3.22/svm.cpp.i
+src/example.cpp.i:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/example.cpp.i
+.PHONY : src/example.cpp.i
 
-libsvm-3.22/svm.s: libsvm-3.22/svm.cpp.s
+src/example.s: src/example.cpp.s
 
-.PHONY : libsvm-3.22/svm.s
+.PHONY : src/example.s
 
 # target to generate assembly for a file
-libsvm-3.22/svm.cpp.s:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/libsvm-3.22/svm.cpp.s
-.PHONY : libsvm-3.22/svm.cpp.s
+src/example.cpp.s:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/example.cpp.s
+.PHONY : src/example.cpp.s
 
-resample/resample.o: resample/resample.cpp.o
+src/libsvm-3.22/svm.o: src/libsvm-3.22/svm.cpp.o
 
-.PHONY : resample/resample.o
+.PHONY : src/libsvm-3.22/svm.o
 
 # target to build an object file
-resample/resample.cpp.o:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/resample/resample.cpp.o
-.PHONY : resample/resample.cpp.o
+src/libsvm-3.22/svm.cpp.o:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o
+.PHONY : src/libsvm-3.22/svm.cpp.o
 
-resample/resample.i: resample/resample.cpp.i
+src/libsvm-3.22/svm.i: src/libsvm-3.22/svm.cpp.i
 
-.PHONY : resample/resample.i
+.PHONY : src/libsvm-3.22/svm.i
 
 # target to preprocess a source file
-resample/resample.cpp.i:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/resample/resample.cpp.i
-.PHONY : resample/resample.cpp.i
+src/libsvm-3.22/svm.cpp.i:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.i
+.PHONY : src/libsvm-3.22/svm.cpp.i
 
-resample/resample.s: resample/resample.cpp.s
+src/libsvm-3.22/svm.s: src/libsvm-3.22/svm.cpp.s
 
-.PHONY : resample/resample.s
+.PHONY : src/libsvm-3.22/svm.s
 
 # target to generate assembly for a file
-resample/resample.cpp.s:
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/resample/resample.cpp.s
-.PHONY : resample/resample.cpp.s
+src/libsvm-3.22/svm.cpp.s:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.s
+.PHONY : src/libsvm-3.22/svm.cpp.s
+
+src/resample/resample.o: src/resample/resample.cpp.o
+
+.PHONY : src/resample/resample.o
+
+# target to build an object file
+src/resample/resample.cpp.o:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/resample/resample.cpp.o
+.PHONY : src/resample/resample.cpp.o
+
+src/resample/resample.i: src/resample/resample.cpp.i
+
+.PHONY : src/resample/resample.i
+
+# target to preprocess a source file
+src/resample/resample.cpp.i:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/resample/resample.cpp.i
+.PHONY : src/resample/resample.cpp.i
+
+src/resample/resample.s: src/resample/resample.cpp.s
+
+.PHONY : src/resample/resample.s
+
+# target to generate assembly for a file
+src/resample/resample.cpp.s:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/resample/resample.cpp.s
+.PHONY : src/resample/resample.cpp.s
 
 # Help Target
 help:
@@ -267,21 +267,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... example"
-	@echo "... ECG.o"
-	@echo "... ECG.i"
-	@echo "... ECG.s"
-	@echo "... QRS_detection.o"
-	@echo "... QRS_detection.i"
-	@echo "... QRS_detection.s"
-	@echo "... example.o"
-	@echo "... example.i"
-	@echo "... example.s"
-	@echo "... libsvm-3.22/svm.o"
-	@echo "... libsvm-3.22/svm.i"
-	@echo "... libsvm-3.22/svm.s"
-	@echo "... resample/resample.o"
-	@echo "... resample/resample.i"
-	@echo "... resample/resample.s"
+	@echo "... src/ECG.o"
+	@echo "... src/ECG.i"
+	@echo "... src/ECG.s"
+	@echo "... src/QRS_detection.o"
+	@echo "... src/QRS_detection.i"
+	@echo "... src/QRS_detection.s"
+	@echo "... src/example.o"
+	@echo "... src/example.i"
+	@echo "... src/example.s"
+	@echo "... src/libsvm-3.22/svm.o"
+	@echo "... src/libsvm-3.22/svm.i"
+	@echo "... src/libsvm-3.22/svm.s"
+	@echo "... src/resample/resample.o"
+	@echo "... src/resample/resample.i"
+	@echo "... src/resample/resample.s"
 .PHONY : help
 
 

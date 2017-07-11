@@ -8,7 +8,6 @@ The classes used in this module follow the standard **AAMI-Recomendations**:
 |--|--|--|--|--|-----|
 |id| 0| 1|2|3|4|
 
-
 # Compilation:
 ```
 mkdir build
@@ -42,7 +41,7 @@ signal[N]\n
 
 # Requirements:
 
-*NOTE: this requirements are only informative since the files required for this libraries have been included in the proyect*
+*NOTE: these requirements are only informative since the files required for these libraries have been already included in the proyect*
 
 ## LibSVM
 To use the trained SVM models and predict the result for new incoming data

@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/ECG.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/ECG.cpp.o"
-  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/QRS_detection.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/QRS_detection.cpp.o"
-  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/example.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/example.cpp.o"
-  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/libsvm-3.22/svm.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o"
-  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/resample/resample.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/resample/resample.cpp.o"
+  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/ECG.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/src/ECG.cpp.o"
+  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/QRS_detection.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/src/QRS_detection.cpp.o"
+  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/example.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/src/example.cpp.o"
+  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/libsvm-3.22/svm.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o"
+  "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/resample/resample.cpp" "/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles/example.dir/src/resample/resample.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

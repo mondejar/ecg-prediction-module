@@ -57,142 +57,142 @@ include CMakeFiles/example.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/example.dir/flags.make
 
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o: CMakeFiles/example.dir/flags.make
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o: ../libsvm-3.22/svm.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/libsvm-3.22/svm.cpp
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o: CMakeFiles/example.dir/flags.make
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o: ../src/libsvm-3.22/svm.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/libsvm-3.22/svm.cpp
 
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/libsvm-3.22/svm.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/libsvm-3.22/svm.cpp > CMakeFiles/example.dir/libsvm-3.22/svm.cpp.i
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/libsvm-3.22/svm.cpp > CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.i
 
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/libsvm-3.22/svm.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/libsvm-3.22/svm.cpp -o CMakeFiles/example.dir/libsvm-3.22/svm.cpp.s
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/libsvm-3.22/svm.cpp -o CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.s
 
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.requires:
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.requires:
 
-.PHONY : CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.requires
+.PHONY : CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.requires
 
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.provides: CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.requires
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.provides.build
-.PHONY : CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.provides
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.provides: CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.requires
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.provides.build
+.PHONY : CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.provides
 
-CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.provides.build: CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o
-
-
-CMakeFiles/example.dir/QRS_detection.cpp.o: CMakeFiles/example.dir/flags.make
-CMakeFiles/example.dir/QRS_detection.cpp.o: ../QRS_detection.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/example.dir/QRS_detection.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/QRS_detection.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/QRS_detection.cpp
-
-CMakeFiles/example.dir/QRS_detection.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/QRS_detection.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/QRS_detection.cpp > CMakeFiles/example.dir/QRS_detection.cpp.i
-
-CMakeFiles/example.dir/QRS_detection.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/QRS_detection.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/QRS_detection.cpp -o CMakeFiles/example.dir/QRS_detection.cpp.s
-
-CMakeFiles/example.dir/QRS_detection.cpp.o.requires:
-
-.PHONY : CMakeFiles/example.dir/QRS_detection.cpp.o.requires
-
-CMakeFiles/example.dir/QRS_detection.cpp.o.provides: CMakeFiles/example.dir/QRS_detection.cpp.o.requires
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/QRS_detection.cpp.o.provides.build
-.PHONY : CMakeFiles/example.dir/QRS_detection.cpp.o.provides
-
-CMakeFiles/example.dir/QRS_detection.cpp.o.provides.build: CMakeFiles/example.dir/QRS_detection.cpp.o
+CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.provides.build: CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o
 
 
-CMakeFiles/example.dir/resample/resample.cpp.o: CMakeFiles/example.dir/flags.make
-CMakeFiles/example.dir/resample/resample.cpp.o: ../resample/resample.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/example.dir/resample/resample.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/resample/resample.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/resample/resample.cpp
+CMakeFiles/example.dir/src/QRS_detection.cpp.o: CMakeFiles/example.dir/flags.make
+CMakeFiles/example.dir/src/QRS_detection.cpp.o: ../src/QRS_detection.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/example.dir/src/QRS_detection.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/src/QRS_detection.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/QRS_detection.cpp
 
-CMakeFiles/example.dir/resample/resample.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/resample/resample.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/resample/resample.cpp > CMakeFiles/example.dir/resample/resample.cpp.i
+CMakeFiles/example.dir/src/QRS_detection.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/src/QRS_detection.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/QRS_detection.cpp > CMakeFiles/example.dir/src/QRS_detection.cpp.i
 
-CMakeFiles/example.dir/resample/resample.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/resample/resample.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/resample/resample.cpp -o CMakeFiles/example.dir/resample/resample.cpp.s
+CMakeFiles/example.dir/src/QRS_detection.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/src/QRS_detection.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/QRS_detection.cpp -o CMakeFiles/example.dir/src/QRS_detection.cpp.s
 
-CMakeFiles/example.dir/resample/resample.cpp.o.requires:
+CMakeFiles/example.dir/src/QRS_detection.cpp.o.requires:
 
-.PHONY : CMakeFiles/example.dir/resample/resample.cpp.o.requires
+.PHONY : CMakeFiles/example.dir/src/QRS_detection.cpp.o.requires
 
-CMakeFiles/example.dir/resample/resample.cpp.o.provides: CMakeFiles/example.dir/resample/resample.cpp.o.requires
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/resample/resample.cpp.o.provides.build
-.PHONY : CMakeFiles/example.dir/resample/resample.cpp.o.provides
+CMakeFiles/example.dir/src/QRS_detection.cpp.o.provides: CMakeFiles/example.dir/src/QRS_detection.cpp.o.requires
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/QRS_detection.cpp.o.provides.build
+.PHONY : CMakeFiles/example.dir/src/QRS_detection.cpp.o.provides
 
-CMakeFiles/example.dir/resample/resample.cpp.o.provides.build: CMakeFiles/example.dir/resample/resample.cpp.o
-
-
-CMakeFiles/example.dir/ECG.cpp.o: CMakeFiles/example.dir/flags.make
-CMakeFiles/example.dir/ECG.cpp.o: ../ECG.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/example.dir/ECG.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/ECG.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/ECG.cpp
-
-CMakeFiles/example.dir/ECG.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/ECG.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/ECG.cpp > CMakeFiles/example.dir/ECG.cpp.i
-
-CMakeFiles/example.dir/ECG.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/ECG.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/ECG.cpp -o CMakeFiles/example.dir/ECG.cpp.s
-
-CMakeFiles/example.dir/ECG.cpp.o.requires:
-
-.PHONY : CMakeFiles/example.dir/ECG.cpp.o.requires
-
-CMakeFiles/example.dir/ECG.cpp.o.provides: CMakeFiles/example.dir/ECG.cpp.o.requires
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/ECG.cpp.o.provides.build
-.PHONY : CMakeFiles/example.dir/ECG.cpp.o.provides
-
-CMakeFiles/example.dir/ECG.cpp.o.provides.build: CMakeFiles/example.dir/ECG.cpp.o
+CMakeFiles/example.dir/src/QRS_detection.cpp.o.provides.build: CMakeFiles/example.dir/src/QRS_detection.cpp.o
 
 
-CMakeFiles/example.dir/example.cpp.o: CMakeFiles/example.dir/flags.make
-CMakeFiles/example.dir/example.cpp.o: ../example.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/example.dir/example.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/example.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/example.cpp
+CMakeFiles/example.dir/src/resample/resample.cpp.o: CMakeFiles/example.dir/flags.make
+CMakeFiles/example.dir/src/resample/resample.cpp.o: ../src/resample/resample.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/example.dir/src/resample/resample.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/src/resample/resample.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/resample/resample.cpp
 
-CMakeFiles/example.dir/example.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/example.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/example.cpp > CMakeFiles/example.dir/example.cpp.i
+CMakeFiles/example.dir/src/resample/resample.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/src/resample/resample.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/resample/resample.cpp > CMakeFiles/example.dir/src/resample/resample.cpp.i
 
-CMakeFiles/example.dir/example.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/example.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/example.cpp -o CMakeFiles/example.dir/example.cpp.s
+CMakeFiles/example.dir/src/resample/resample.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/src/resample/resample.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/resample/resample.cpp -o CMakeFiles/example.dir/src/resample/resample.cpp.s
 
-CMakeFiles/example.dir/example.cpp.o.requires:
+CMakeFiles/example.dir/src/resample/resample.cpp.o.requires:
 
-.PHONY : CMakeFiles/example.dir/example.cpp.o.requires
+.PHONY : CMakeFiles/example.dir/src/resample/resample.cpp.o.requires
 
-CMakeFiles/example.dir/example.cpp.o.provides: CMakeFiles/example.dir/example.cpp.o.requires
-	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cpp.o.provides.build
-.PHONY : CMakeFiles/example.dir/example.cpp.o.provides
+CMakeFiles/example.dir/src/resample/resample.cpp.o.provides: CMakeFiles/example.dir/src/resample/resample.cpp.o.requires
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/resample/resample.cpp.o.provides.build
+.PHONY : CMakeFiles/example.dir/src/resample/resample.cpp.o.provides
 
-CMakeFiles/example.dir/example.cpp.o.provides.build: CMakeFiles/example.dir/example.cpp.o
+CMakeFiles/example.dir/src/resample/resample.cpp.o.provides.build: CMakeFiles/example.dir/src/resample/resample.cpp.o
+
+
+CMakeFiles/example.dir/src/ECG.cpp.o: CMakeFiles/example.dir/flags.make
+CMakeFiles/example.dir/src/ECG.cpp.o: ../src/ECG.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/example.dir/src/ECG.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/src/ECG.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/ECG.cpp
+
+CMakeFiles/example.dir/src/ECG.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/src/ECG.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/ECG.cpp > CMakeFiles/example.dir/src/ECG.cpp.i
+
+CMakeFiles/example.dir/src/ECG.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/src/ECG.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/ECG.cpp -o CMakeFiles/example.dir/src/ECG.cpp.s
+
+CMakeFiles/example.dir/src/ECG.cpp.o.requires:
+
+.PHONY : CMakeFiles/example.dir/src/ECG.cpp.o.requires
+
+CMakeFiles/example.dir/src/ECG.cpp.o.provides: CMakeFiles/example.dir/src/ECG.cpp.o.requires
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/ECG.cpp.o.provides.build
+.PHONY : CMakeFiles/example.dir/src/ECG.cpp.o.provides
+
+CMakeFiles/example.dir/src/ECG.cpp.o.provides.build: CMakeFiles/example.dir/src/ECG.cpp.o
+
+
+CMakeFiles/example.dir/src/example.cpp.o: CMakeFiles/example.dir/flags.make
+CMakeFiles/example.dir/src/example.cpp.o: ../src/example.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mondejar/Dropbox/ECG/code/ecg_prediction_module/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/example.dir/src/example.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/example.dir/src/example.cpp.o -c /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/example.cpp
+
+CMakeFiles/example.dir/src/example.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/example.dir/src/example.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/example.cpp > CMakeFiles/example.dir/src/example.cpp.i
+
+CMakeFiles/example.dir/src/example.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/example.dir/src/example.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mondejar/Dropbox/ECG/code/ecg_prediction_module/src/example.cpp -o CMakeFiles/example.dir/src/example.cpp.s
+
+CMakeFiles/example.dir/src/example.cpp.o.requires:
+
+.PHONY : CMakeFiles/example.dir/src/example.cpp.o.requires
+
+CMakeFiles/example.dir/src/example.cpp.o.provides: CMakeFiles/example.dir/src/example.cpp.o.requires
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/src/example.cpp.o.provides.build
+.PHONY : CMakeFiles/example.dir/src/example.cpp.o.provides
+
+CMakeFiles/example.dir/src/example.cpp.o.provides.build: CMakeFiles/example.dir/src/example.cpp.o
 
 
 # Object files for target example
 example_OBJECTS = \
-"CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o" \
-"CMakeFiles/example.dir/QRS_detection.cpp.o" \
-"CMakeFiles/example.dir/resample/resample.cpp.o" \
-"CMakeFiles/example.dir/ECG.cpp.o" \
-"CMakeFiles/example.dir/example.cpp.o"
+"CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o" \
+"CMakeFiles/example.dir/src/QRS_detection.cpp.o" \
+"CMakeFiles/example.dir/src/resample/resample.cpp.o" \
+"CMakeFiles/example.dir/src/ECG.cpp.o" \
+"CMakeFiles/example.dir/src/example.cpp.o"
 
 # External object files for target example
 example_EXTERNAL_OBJECTS =
 
-example: CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o
-example: CMakeFiles/example.dir/QRS_detection.cpp.o
-example: CMakeFiles/example.dir/resample/resample.cpp.o
-example: CMakeFiles/example.dir/ECG.cpp.o
-example: CMakeFiles/example.dir/example.cpp.o
+example: CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o
+example: CMakeFiles/example.dir/src/QRS_detection.cpp.o
+example: CMakeFiles/example.dir/src/resample/resample.cpp.o
+example: CMakeFiles/example.dir/src/ECG.cpp.o
+example: CMakeFiles/example.dir/src/example.cpp.o
 example: CMakeFiles/example.dir/build.make
 example: /usr/lib/x86_64-linux-gnu/libpython3.5m.so
 example: CMakeFiles/example.dir/link.txt
@@ -204,11 +204,11 @@ CMakeFiles/example.dir/build: example
 
 .PHONY : CMakeFiles/example.dir/build
 
-CMakeFiles/example.dir/requires: CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o.requires
-CMakeFiles/example.dir/requires: CMakeFiles/example.dir/QRS_detection.cpp.o.requires
-CMakeFiles/example.dir/requires: CMakeFiles/example.dir/resample/resample.cpp.o.requires
-CMakeFiles/example.dir/requires: CMakeFiles/example.dir/ECG.cpp.o.requires
-CMakeFiles/example.dir/requires: CMakeFiles/example.dir/example.cpp.o.requires
+CMakeFiles/example.dir/requires: CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o.requires
+CMakeFiles/example.dir/requires: CMakeFiles/example.dir/src/QRS_detection.cpp.o.requires
+CMakeFiles/example.dir/requires: CMakeFiles/example.dir/src/resample/resample.cpp.o.requires
+CMakeFiles/example.dir/requires: CMakeFiles/example.dir/src/ECG.cpp.o.requires
+CMakeFiles/example.dir/requires: CMakeFiles/example.dir/src/example.cpp.o.requires
 
 .PHONY : CMakeFiles/example.dir/requires
 

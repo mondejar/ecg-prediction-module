@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/example.dir/libsvm-3.22/svm.cpp.o"
-  "CMakeFiles/example.dir/QRS_detection.cpp.o"
-  "CMakeFiles/example.dir/resample/resample.cpp.o"
-  "CMakeFiles/example.dir/ECG.cpp.o"
-  "CMakeFiles/example.dir/example.cpp.o"
+  "CMakeFiles/example.dir/src/libsvm-3.22/svm.cpp.o"
+  "CMakeFiles/example.dir/src/QRS_detection.cpp.o"
+  "CMakeFiles/example.dir/src/resample/resample.cpp.o"
+  "CMakeFiles/example.dir/src/ECG.cpp.o"
+  "CMakeFiles/example.dir/src/example.cpp.o"
   "example.pdb"
   "example"
 )
