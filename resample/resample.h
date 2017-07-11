@@ -1,3 +1,9 @@
+// License
+// Boost
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//      http://www.boost.org/LICENSE_1_0.txt)
+
 //RESAMPLE  Change the sampling rate of a signal.
 //   Y = RESAMPLE(UpFactor, DownFactor, InputSignal, OutputSignal) resamples the sequence in 
 //   vector InputSignal at UpFactor/DownFactor times and stores the resampled data to OutputSignal.
@@ -8,8 +14,9 @@
 
 //Author: Haoqi Bai
 
-#include <boost/math/special_functions/bessel.hpp>
+//#include <boost/math/special_functions/bessel.hpp>
 #include <math.h>
+#include "boost/math/special_functions/bessel.hpp"
 #include "upfirdn.h"
 #include <vector>
 

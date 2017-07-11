@@ -42,6 +42,8 @@ signal[N]\n
 
 # Requirements:
 
+*NOTE: this requirements are only informative since the files required for this libraries have been included in the proyect*
+
 ## LibSVM
 To use the trained SVM models and predict the result for new incoming data
 
@@ -51,9 +53,7 @@ Installation:
 Simply extract the *.zip* folder on the same dir.
 
 ## Boost libraries
-If the input signal has a different frequency sampling of 360 the *resample* function that uses the Boost libraries is needed.
-
-
+If the input signal has a different frequency sampling of 360 the *resample* function that uses the Boost libraries is needed. 
 
 Download the folder from the website http://www.boost.org/ and extract the folder. Then
 on that directory execute:
