@@ -25,7 +25,9 @@ class ECG {
 
 	public:
 		//Constructor
-		ECG();
+		//Params:
+			//svm_model_path: full path to the folder which contains the trained svm models
+		ECG(std::string svm_model_path);
 
 		//Description: Function for predict the state of each beat given an ECG signal
 		//Params:
@@ -68,7 +70,7 @@ class ECG {
 		svm_model *model;
 
 		int n_classes;
-		std::string _svm_model_name;
+		std::string _svm_models_path, _svm_models_name;
 		int _w_l, _w_r;
 		std::vector<int> r_peaks;
 		std::vector<double> ecg;

@@ -103,7 +103,9 @@ ecg.h
 ```cpp
 ...
 //Constructor
-ECG();
+//Params:
+	//svm_model_path: full path to the folder which contains the trained svm models
+ECG(std::string svm_models_path);
 
 //Description: Function for predict the state of each beat given an ECG signal
 //Params:

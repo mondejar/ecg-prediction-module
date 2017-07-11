@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 		std::cout<< " Signal size from csv: = "<< ecg.size() << std::endl;
 
 		// Run classifier 
-		ECG* ecg_classifier = new ECG();
+		ECG* ecg_classifier = new ECG("../svm_models");
 		ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
 		delete ecg_classifier;
 

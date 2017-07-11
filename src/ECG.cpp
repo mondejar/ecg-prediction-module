@@ -9,21 +9,29 @@
 #include "ECG.h"
 
 // Constructor
-ECG::ECG ()
+ECG::ECG (std::string svm_models_path)
 {
 	n_classes = 4;
 
-	_w_l = 90;// Window Left of the beat centered on R-peak
-	_w_r = 90;// Window Right of the beat centered on R-peak
-	_svm_model_name = "../svm_models/svm_ovo_RR_"; // full-path to svm model 
+	_w_l = 90;// Window Left of the beat centered on R-peak for compute morphology descriptor
+	_w_r = 90;// Window Right of the beat centered on R-peak for compute morphology descriptor
+	_svm_models_path = svm_models_path; // full-path to svm model 
 
 	_use_RR_intervals = true;
 	_use_wavelets = false;
 
+	_svm_models_name = "svm_ovo_";
+
+	if(_use_RR_intervals)
+		_svm_models_name += "RR_";
+
+	if(_use_wavelets)
+		_svm_models_name += "wvlt_";
+		 
 	// Load SVM models one-vs-one 
 	for(int m = 0; m < 6; m++){
-		std::cout<< " model name "<< (_svm_model_name + std::to_string(m) + ".model"  ) << std::endl;
-		models.push_back(svm_load_model( (_svm_model_name + std::to_string(m) + ".model"  ).c_str()));
+		std::cout<< " model name "<< (_svm_models_path + _svm_models_name + std::to_string(m) + ".model"  ) << std::endl;
+		models.push_back(svm_load_model( (_svm_models_path +  _svm_models_name + std::to_string(m) + ".model"  ).c_str()));
 	}
 }
 
