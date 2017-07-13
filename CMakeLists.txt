@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 add_definitions("-std=c++11")
 
 file(GLOB DspFilters_SRC
-    "src/signal_processing/DSPFilters/source/*.cpp"
+    "src/DSPFilters/source/*.cpp"
 )
 
 file(GLOB FILES_SRC
