@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS} "src/signal_processing/DSPFilters/include")
+include_directories(${PYTHON_INCLUDE_DIRS} "src/DSPFilters/include")
 
 #FIND_PACKAGE( Boost COMPONENTS program_options REQUIRED )
 #INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
