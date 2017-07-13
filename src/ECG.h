@@ -16,7 +16,7 @@
 #include <string>
 #include <exception>
 #include "QRS_detection.h"
-#include "signal_processing/DSPFilters/include/DspFilters/Dsp.h"
+#include "DSPFilters/include/DspFilters/Dsp.h"
 
 class ECG {
 
