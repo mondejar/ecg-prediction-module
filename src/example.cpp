@@ -8,7 +8,7 @@
 
 #include "ECG.h"
 
-/// Load file .csv and push the data into std::vector ecg
+/// Read ECG signal and properties from text file
 bool load_signal(std::vector<double> &ecg, float &fs, float &minA, float &maxA, 
 				 int &n_bits, std::string filename)
 {
@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	if(argc < 2)
 	{
 		std::cout<< "Error: a file that contains the ecg signal is required!\n\
-					 Example of use: main_GU ../data/220.csv" << std::endl;
+					 Example of use: example ../data/220.csv" << std::endl;
 		return 0;	
 	}
 
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 
 	}
 	else
-		std::cout<< "Error: an error ocurred file not open" << std::endl;
+		std::cout<< "Error: an error ocurred 'file not open'" << std::endl;
 
 return 0;
 

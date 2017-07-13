@@ -15,11 +15,8 @@
 #include <fstream>
 #include <string>
 #include <exception>
-#include <iostream>
-#include <stdlib.h>  
-#include <vector>
 #include "QRS_detection.h"
-
+#include "signal_processing/DSPFilters/include/DspFilters/Dsp.h"
 
 class ECG {
 
@@ -65,6 +62,9 @@ class ECG {
 							//(std::vector<double>beat, 
 		svm_node *compute_feature(float pre_R, float post_R, float local_R, float global_R);
 
+		void center_RR(std::vector<double> &ecg, std::vector<int> &r_peaks);
+
+
 		// Variables
 		std::vector<svm_model*> models;
 		svm_model *model;
@@ -75,6 +75,8 @@ class ECG {
 		std::vector<int> r_peaks;
 		std::vector<double> ecg;
 		bool _use_wavelets, _use_RR_intervals;
+		Dsp::Filter* butterwoth_filter;
+
 };
 
 #endif

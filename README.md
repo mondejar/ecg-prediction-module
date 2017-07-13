@@ -41,7 +41,7 @@ signal[N]\n
 
 # Requirements:
 
-*NOTE: these requirements are only informative since the files required for these libraries have been already included in the proyect*
+*NOTE: these requirements are only informative since the files required for these libraries have been already included in the project*
 
 ## LibSVM
 To use the trained SVM models and predict the result for new incoming data
@@ -65,6 +65,14 @@ and finally:
 ```
 sudo ./b2 install 
 ```
+
+## DSPFilters
+
+For butterworth lowpass filtering
+
+https://github.com/vinniefalco/DSPFilters
+
+
 
 # Files
 
@@ -94,7 +102,7 @@ Just created and object of the class *ecg* and call the method *predict_ecg*:
 
 ...
 // Run classifier 
-ECG* ecg_classifier = new ECG();
+ECG* ecg_classifier = new ECG("../svm_models");
 ecg_classifier.predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
 delete ecg_classifier;
 ```
