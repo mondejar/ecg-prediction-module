@@ -21,6 +21,7 @@ file(GLOB DspFilters_SRC
 
 file(GLOB FILES_SRC
     "src/resample/*.cpp"
+	"src/resample/*.hpp"
     "src/*.cpp"
 )
 

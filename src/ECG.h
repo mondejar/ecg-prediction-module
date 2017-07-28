@@ -36,9 +36,9 @@ class ECG {
 			//n_bits: number of bits used for represent the signal
 			//
 			//Output:
-			//r_peaks: a vector that contains the values of each R peak detection
+    		//r_peaks: a vector that contains the values of each R peak detection at original frequency fs
 			//predictions: a vector that containst the state of each beat (N, SVEB, VEB, F, Q) [0-4]
-		void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA, float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
+		void predict_ecg(std::vector<double> ecg, float fs, float minA, float maxA, float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
 
 	private:
 
@@ -76,7 +76,6 @@ class ECG {
 		std::vector<double> ecg;
 		bool _use_wavelets, _use_RR_intervals;
 		Dsp::Filter* butterwoth_filter;
-
 };
 
 #endif

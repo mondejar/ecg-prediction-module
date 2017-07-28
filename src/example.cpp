@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 		return 0;	
 	}
 
-	std::vector<double> ecg;
+	std::vector<double> ecg, ecg_360;
 	float fs, minA, maxA;
 	int n_bits;
 	// Load signal given by the .csv file 
@@ -70,6 +70,7 @@ int main(int argc, char* argv[])
 		// Run classifier 
 		ECG* ecg_classifier = new ECG("../svm_models");
 		ecg_classifier->predict_ecg(ecg, fs, minA, maxA, n_bits, r_peaks, predictions);
+
 		delete ecg_classifier;
 
 		// Write results to a file

@@ -1,12 +1,22 @@
 # ECG prediction module
 
-Given an ecg signal this module detects its R-peaks and return a prediction for each beat.
+Given an ML-II (derivation II) ECG signal, this module detects its R-peaks and return a prediction for each beat.
 
 The classes used in this module follow the standard **AAMI-Recomendations**:
  
 | Class |  N| SVEB| VEB | F | Q |
 |--|--|--|--|--|-----|
 |id| 0| 1|2|3|4|
+
+**N**: Normal
+
+**SVEB**: Supraventricular
+
+**VEB**: Ventricular Ectopic Beat 
+
+**F**: Fusion
+
+**Q**: unknown beat
 
 # Compilation:
 ```
@@ -125,7 +135,7 @@ ECG(std::string svm_models_path);
     //n_bits: number of bits used for represent the signal
     //
     //Output:
-    //r_peaks: a vector that contains the values of each R peak detection
+    //r_peaks: a vector that contains the values of each R peak detection at original frequency fs
     //predictions: a vector that containst the state of each beat (N, SVEB, VEB, F, Q) [0-4]
 void predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA, float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions);
 

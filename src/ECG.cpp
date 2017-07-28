@@ -113,23 +113,22 @@ void ECG::center_RR(std::vector<double> &ecg, std::vector<int> &r_peaks)
 	}
 }
 
-void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA,
+
+void ECG::predict_ecg(std::vector<double> ecg, float fs, float minA, float maxA,
 			          float n_bits, std::vector<int> &r_peaks, std::vector<int> &predictions)
 {
 	bool do_preprocess = true;
 	bool center_RR_max = true;
 
-	// Re-sample to 360Hz
-	if(fs != 360)
+	if(fs != 360)// Re-sample to 360Hz
 	{
-		std::cout<< "Resampling to 360 Hz..." << std::endl;
+		std::cout<< "Resampling to "<< 360 << " Hz..." << std::endl;
 		std::vector<double> output;
-		resample( 360, fs, ecg, output);
-		//update signal
-		ecg = output;
 
-		fs = 360;
+		resample(360, fs, ecg, output);
+		ecg = output;
 	}
+
 
 	//////// PREPROCESS
     // Each signal was processed with a median filter of 200-ms width to remove QRS complexes and P-waves.
@@ -141,7 +140,6 @@ void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA
 		std::vector<double> baseline2(ecg.size());
 
 		median_filter1D(ecg, baseline, 72);
-
 
 		// The resulting signal was then processed with a median filter of 600 ms width to remove T-waves.
 		// 600ms at 360Hz = 216
@@ -184,6 +182,8 @@ void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA
 	if(_use_RR_intervals)
 		compute_RR_intervals(r_peaks, pre_R, post_R, local_R, global_R);
 
+	// TODO: compute High Order Statistics and my morphology descriptor
+
 	int prediction; 
 	for(int i = 0; i < r_peaks.size(); i++)
 	{
@@ -198,14 +198,28 @@ void ECG::predict_ecg(std::vector<double> &ecg, float fs, float minA, float maxA
 			//beat
 			features = compute_feature(pre_R[i], post_R[i], local_R[i], global_R[i]);
 
-			// TODO: predict one by one or predict all features together?
+			// TODO: predict one by one or predict all beats together?
 			//       maybe is more efficient the second
 			prediction = predict_beat_one_vs_one_SVM(features);
 			predictions.push_back(prediction);
 			free(features);
 		}
 	}
+
+	// Resample R-peak points to original freq
+	if(fs != 360)
+	{
+		std::cout<< "Resampling R-peaks positions to "<< fs << " Hz..." << std::endl;
+		for(int i = 0; i < r_peaks.size(); i++)
+		{
+			r_peaks[i] = r_peaks[i] / (360 / fs);
+		}
+	}
+
 }
+
+
+
 
 void ECG::compute_RR_intervals(std::vector<int> R_poses, std::vector<double> &pre_R,
 							   std::vector<double> &post_R, std::vector<double> &local_R, 
