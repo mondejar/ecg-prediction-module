@@ -173,11 +173,11 @@ void ECG::predict_ecg(std::vector<double> ecg, float fs, float minA, float maxA,
 	if(center_RR_max)
 		center_RR(ecg, r_peaks);
 
-	// Compute RR_intervals information from the full signal
 	// Normalization min_A - max_A to range [0-1]
 	for(int i = 0; i < ecg.size(); i++)
 		ecg[i] = (ecg[i] - minA) / (maxA - minA);
 
+	// Compute RR_intervals information from the full signal
 	std::vector<double> pre_R, post_R, local_R, global_R;
 	if(_use_RR_intervals)
 		compute_RR_intervals(r_peaks, pre_R, post_R, local_R, global_R);

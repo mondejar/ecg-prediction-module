@@ -18,13 +18,11 @@ The classes used in this module follow the standard **AAMI-Recomendations**:
 
 **Q**: unknown beat
 
-
 # Python implementation
 
 ## Compilation:
 
 ## Example of use:
-
 
 ## Requirements:
 
@@ -36,15 +34,17 @@ To use the trained SVM models and predict the result for new incoming data
 Download from: https://www.csie.ntu.edu.tw/~cjlin/libsvm/
 
 Installation:
-Simply extract the *.zip* folder on the same dir.
+Type 'make clean' and then 'make' on dir: 3rdparty/libsvm-3.22
+and then type 'make' on dir 3rdparty/libsvm-3.22/python to generate the file 'libsvm.so.2'
 
-###
-matplotlib
+### Python libraries
+
+#### matplotlib
+
+#### scipy
 
 ## Files
 
 ### .py
 
-
 # C++ implementation
-

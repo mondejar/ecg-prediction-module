@@ -35,11 +35,13 @@ https://zenodo.org/record/583770
 import numpy as np
 import matplotlib.pyplot as plt
 from time import gmtime, strftime
-from scipy.signal import butter, lfilter
-import operator
+from scipy.signal import butter, lfilter, resample
 
 LOG_DIR = "logs/"
 PLOT_DIR = "plots/"
+
+
+
 
 class QRSDetectorOffline(object):
     """
@@ -64,25 +66,31 @@ class QRSDetectorOffline(object):
         :param bool plot_data: flag for plotting the results to a file
         :param bool show_plot: flag for showing generated results plot - will not show anything if plot is not generated
         """
+        # Loaded ECG data.
+        self.ecg_data_raw = ecg_data_raw
+
+        if fs != 360:
+            self.resample_signal(fs) # Added by Mondejar-Guerra
+        else:
+            self.ecg_data = ecg_data_raw
+
         # Configuration parameters.
-        self.signal_frequency = fs #250  # Set ECG device frequency in samples per second here.
+        self.signal_frequency = 360 #250  # Set ECG device frequency in samples per second here.
 
         self.filter_lowcut = 0.0
         self.filter_highcut = 15.0
         self.filter_order = 1
 
-        self.integration_window = 16 #fs / 16 #15  # Change proportionally when adjusting frequency (in samples).
+        self.integration_window = 16 #360 / 16 #15  # Change proportionally when adjusting frequency (in samples).
 
         self.findpeaks_limit = 0.35
-        self.findpeaks_spacing = 72#fs / 5 #50  # Change proportionally when adjusting frequency (in samples).
+        self.findpeaks_spacing = 72#360 / 5 #50  # Change proportionally when adjusting frequency (in samples).
 
-        self.refractory_period = 180#fs / 2 #120  # Change proportionally when adjusting frequency (in samples).
+        self.refractory_period = 180#360 / 2 #120  # Change proportionally when adjusting frequency (in samples).
         self.qrs_peak_filtering_factor = 0.125
         self.noise_peak_filtering_factor = 0.125
         self.qrs_noise_diff_weight = 0.25
 
-        # Loaded ECG data.
-        self.ecg_data_raw = np.column_stack( (range(0, len(ecg_data_raw)) , ecg_data_raw))
 
         # Measured and calculated values.
         self.filtered_ecg_measurements = None
@@ -107,10 +115,16 @@ class QRSDetectorOffline(object):
         #self.load_ecg_data()
         self.detect_peaks()
         self.detect_qrs()
-
-        # added by Mondejar-Guerra, V
-        self.adjust_qrs_at_max()
-
+        
+        if fs != 360:
+            factor =  360.0 / fs
+            # Resample R-peak points to original freq
+            for i in range(0, len(self.qrs_peaks_indices)):
+                self.qrs_peaks_indices_fs = np.append(self.qrs_peaks_indices_fs, int(elf.qrs_peaks_indices / factor))
+        else:
+            self.qrs_peaks_indices_fs = self.qrs_peaks_indices
+        
+        
         if verbose:
             self.print_detection_data()
 
@@ -118,6 +132,14 @@ class QRSDetectorOffline(object):
             self.plot_path = "{:s}QRS_offline_detector_plot_{:s}.png".format(PLOT_DIR,
                                                                              strftime("%Y_%m_%d_%H_%M_%S", gmtime()))
             self.plot_detection_data(show_plot=show_plot)
+
+    """
+    Resample signal to 360Hz 
+    """
+    def resample_signal(self, fs):
+        factor = 360.0 / fs
+        num_samples = int(round(factor * len(self.ecg_data_raw)))
+        self.ecg_data = resample(self.ecg_data_raw, num_samples)
 
     """Loading ECG measurements data methods."""
 
@@ -128,7 +150,7 @@ class QRSDetectorOffline(object):
         Method responsible for extracting peaks from loaded ECG measurements data through measurements processing.
         """
         # Extract measurements from loaded ECG data.
-        ecg_measurements = self.ecg_data_raw[:, 1]
+        ecg_measurements = self.ecg_data#_raw[:, 1]
 
         # Measurements filtering - 0-15 Hz band pass filter.
         self.filtered_ecg_measurements = self.bandpass_filter(ecg_measurements, lowcut=self.filter_lowcut,
@@ -188,35 +210,11 @@ class QRSDetectorOffline(object):
 
         # Create array containing both input ECG measurements data and QRS detection indication column.
         # We mark QRS detection with '1' flag in 'qrs_detected' log column ('0' otherwise).
-        measurement_qrs_detection_flag = np.zeros([len(self.ecg_data_raw[:, 1]), 1])
+        measurement_qrs_detection_flag = np.zeros([len(self.ecg_data), 1])
         measurement_qrs_detection_flag[self.qrs_peaks_indices] = 1
-        self.ecg_data_detected = np.append(self.ecg_data_raw, measurement_qrs_detection_flag, 1)
+        self.ecg_data_detected = np.append(self.ecg_data, measurement_qrs_detection_flag)
 
     """Results reporting methods."""
-
-    """
-    Adjust R-peaks to their nearest maximum. The signal ML-II usually contains R-peaks at maximum 
-    """
-    def adjust_qrs_at_max(self):
-        index = 0
-        for detected_peak_index in (self.qrs_peaks_indices):
-            l_w = max(detected_peak_index - 20, 0)
-            r_w = min(detected_peak_index + 20, len(self.ecg_data_raw[:, 1]))
-
-            max_index, max_value = max(enumerate(self.ecg_data_raw[l_w:r_w, 1]), key=operator.itemgetter(1))
-            self.qrs_peaks_indices[index] = l_w + max_index
-            index = index + 1
-
-        index = 0
-        for detected_peak_index in (self.noise_peaks_indices):
-            l_w = max(detected_peak_index - 20, 0)
-            r_w = min(detected_peak_index + 20, len(self.ecg_data_raw[:, 1]))
-
-            max_index, max_value = max(enumerate(self.ecg_data_raw[l_w:r_w, 1]), key=operator.itemgetter(1))
-            self.noise_peaks_indices[index] = l_w + max_index
-            index = index + 1
-
-
 
     def print_detection_data(self):
         """
@@ -243,14 +241,14 @@ class QRSDetectorOffline(object):
         plt.close('all')
         fig, axarr = plt.subplots(6, sharex=True, figsize=(15, 18))
 
-        plot_data(axis=axarr[0], data=self.ecg_data_raw[:, 1], title='Raw ECG measurements')
+        plot_data(axis=axarr[0], data=self.ecg_data, title='Raw ECG measurements')
         plot_data(axis=axarr[1], data=self.filtered_ecg_measurements, title='Filtered ECG measurements')
         plot_data(axis=axarr[2], data=self.differentiated_ecg_measurements, title='Differentiated ECG measurements')
         plot_data(axis=axarr[3], data=self.squared_ecg_measurements, title='Squared ECG measurements')
         plot_data(axis=axarr[4], data=self.integrated_ecg_measurements, title='Integrated ECG measurements with QRS peaks marked (black)')
         plot_points(axis=axarr[4], values=self.integrated_ecg_measurements, indices=self.qrs_peaks_indices)
-        plot_data(axis=axarr[5], data=self.ecg_data_detected[:, 1], title='Raw ECG measurements with QRS peaks marked (black)')
-        plot_points(axis=axarr[5], values=self.ecg_data_detected[:, 1], indices=self.qrs_peaks_indices)
+        plot_data(axis=axarr[5], data=self.ecg_data, title='Raw ECG measurements with QRS peaks marked (black)')
+        plot_points(axis=axarr[5], values=self.ecg_data_detected, indices=self.qrs_peaks_indices)
 
         plt.tight_layout()
         fig.savefig(self.plot_path)

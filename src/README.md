@@ -38,9 +38,6 @@ To use the trained SVM models and predict the result for new incoming data
 
 Download from: https://www.csie.ntu.edu.tw/~cjlin/libsvm/
 
-Installation:
-Simply extract the *.zip* folder on the same dir.
-
 ### Boost libraries
 If the input signal has a different frequency sampling of 360 the *resample* function that uses the Boost libraries is needed. 
 

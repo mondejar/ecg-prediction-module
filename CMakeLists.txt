@@ -25,7 +25,7 @@ file(GLOB FILES_SRC
     "src/*.cpp"
 )
 
-add_executable (example ${DspFilters_SRC} src/libsvm-3.22/svm.cpp ${FILES_SRC})
+add_executable (example ${DspFilters_SRC} 3rdparty/libsvm-3.22/svm.cpp ${FILES_SRC})
 target_link_libraries (example ${PYTHON_LIBRARIES}) 
 
 # ${Boost_LIBRARIES})
