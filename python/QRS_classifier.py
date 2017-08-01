@@ -1,19 +1,20 @@
 """
-    QRS_classifier.py
+QRS_classifier.py
     
 VARPA, University of Coruna
 Mondejar Guerra, Victor M.
 31 Jul 2017
 """
 import operator
-import matplotlib.pyplot as plt
 import numpy as np
-
 import sys
 sys.path.insert(0, '../3rdparty/libsvm-3.22/python')
 from svmutil import *
+from scipy.signal import medfilt
+
 
 class QRSClassifier(object):
+
     """
     Python ECG prediction class. 
     Given the qrs location this code return a prediction for each beat.
@@ -28,22 +29,31 @@ class QRSClassifier(object):
         F: Fusion                               3
         Q: unknown beat                         4
     """
-
-    def __init__(self, svm_models_path, ecg_data, qrs_peaks_indices, qrs_peaks_indices_fs, fs, min_A, max_A, show_results):
+    def __init__(self, svm_models_path, ecg_data, qrs_peaks_indices, min_A, max_A):
         """
         QRSClassifier class initialization method.
         :param list qrs_peaks_indices: Positions in x-axis of the qrs peak indeices
         """   
         self.ecg_data = ecg_data
         self.qrs_peaks_indices = qrs_peaks_indices
-        self.qrs_peaks_indices_fs = qrs_peaks_indices_fs
         self.n_classes = 4
         # Adjust R-peak at maximum (ML-II)
         self.adjust_qrs_at_max()
-        # Do preprocess?
-        # median_filter1D
-        # Remove Baseline
-        # Remove High Freqs
+
+        # TODO: Do preprocess?
+        do_preprocess = True
+
+        if do_preprocess:
+            # median_filter1D
+            baseline = medfilt(self.ecg_data, 71) #scipy.signal
+            baseline2 = medfilt(baseline, 215) #scipy.signal
+
+            # Remove Baseline
+            for i in range(0, len(self.ecg_data)):
+                self.ecg_data[i] = self.ecg_data[i] - baseline2[i]
+
+            # Remove High Freqs
+        
 
 	    # Normalization min_A - max_A to range [0-1]
         for i in range(0, len(self.ecg_data)):
@@ -64,30 +74,9 @@ class QRSClassifier(object):
         for i in range(0, len(self.qrs_peaks_indices)):
             features = self.compute_features(i)
             predicted_class, max_votes = self.predict_beat_one_vs_on_SVM(features)            
-            
-            print 'R-peak: ', self.qrs_peaks_indices_fs[i], ' predicted class: ', predicted_class, ' votes: ', max_votes
             predictions.append(predicted_class)
-
-        print predictions
-
-        if show_results:
-            plt.close('all')
-            fig, axarr = plt.subplots(2, sharex=True, figsize=(15, 18))
-            axarr[0].set_title('Signal', fontsize=10)
-            axarr[0].grid(which='both', axis='both', linestyle='--')
-            axarr[0].plot(self.ecg_data, color="salmon", zorder=1)
-            axarr[0].scatter(x=qrs_peaks_indices, y=np.take(self.ecg_data, qrs_peaks_indices), c="black", s=50, zorder=2)
-
-            #axarr[1].set_title('Original Fs', fontsize=10)
-            #axarr[1].grid(which='both', axis='both', linestyle='--')
-            #axarr[1].plot(self.ecg_data, color="salmon", zorder=1)
-
-            # at original frecuency
-            # qrs_peaks_indices_fs
         
-            plt.show()
-            plt.close()
-
+        self.predictions = predictions
 
     """
     Given a beat feature perform the prediction from the 6 binary SVM models
@@ -132,7 +121,7 @@ class QRSClassifier(object):
         features.append(self.global_R[i])
 
         # Standardiation z-score
-        # TODO: load from file
+        # TODO: load this data from file
         media = [276.2640, 276.2435, 273.9888, 272.5610]
         st_desviation = [75.4833, 74.1250, 60.6748, 57.1679]
 

@@ -37,11 +37,7 @@ import matplotlib.pyplot as plt
 from time import gmtime, strftime
 from scipy.signal import butter, lfilter, resample
 
-LOG_DIR = "logs/"
 PLOT_DIR = "plots/"
-
-
-
 
 class QRSDetectorOffline(object):
     """
@@ -72,7 +68,7 @@ class QRSDetectorOffline(object):
         if fs != 360:
             self.resample_signal(fs) # Added by Mondejar-Guerra
         else:
-            self.ecg_data = ecg_data_raw
+            self.ecg_data = ecg_data_raw[:]
 
         # Configuration parameters.
         self.signal_frequency = 360 #250  # Set ECG device frequency in samples per second here.
@@ -90,7 +86,6 @@ class QRSDetectorOffline(object):
         self.qrs_peak_filtering_factor = 0.125
         self.noise_peak_filtering_factor = 0.125
         self.qrs_noise_diff_weight = 0.25
-
 
         # Measured and calculated values.
         self.filtered_ecg_measurements = None
@@ -115,15 +110,14 @@ class QRSDetectorOffline(object):
         #self.load_ecg_data()
         self.detect_peaks()
         self.detect_qrs()
-        
+        self.qrs_peaks_indices_fs = []
         if fs != 360:
             factor =  360.0 / fs
             # Resample R-peak points to original freq
             for i in range(0, len(self.qrs_peaks_indices)):
-                self.qrs_peaks_indices_fs = np.append(self.qrs_peaks_indices_fs, int(elf.qrs_peaks_indices / factor))
+                self.qrs_peaks_indices_fs = np.append(self.qrs_peaks_indices_fs, int(round(self.qrs_peaks_indices[i] / factor)))
         else:
             self.qrs_peaks_indices_fs = self.qrs_peaks_indices
-        
         
         if verbose:
             self.print_detection_data()
@@ -214,50 +208,6 @@ class QRSDetectorOffline(object):
         measurement_qrs_detection_flag[self.qrs_peaks_indices] = 1
         self.ecg_data_detected = np.append(self.ecg_data, measurement_qrs_detection_flag)
 
-    """Results reporting methods."""
-
-    def print_detection_data(self):
-        """
-        Method responsible for printing the results.
-        """
-        print("qrs peaks indices")
-        print(self.qrs_peaks_indices)
-        print("noise peaks indices")
-        print(self.noise_peaks_indices)
-
-    def plot_detection_data(self, show_plot=False):
-        """
-        Method responsible for plotting detection results.
-        :param bool show_plot: flag for plotting the results and showing plot
-        """
-        def plot_data(axis, data, title='', fontsize=10):
-            axis.set_title(title, fontsize=fontsize)
-            axis.grid(which='both', axis='both', linestyle='--')
-            axis.plot(data, color="salmon", zorder=1)
-
-        def plot_points(axis, values, indices):
-            axis.scatter(x=indices, y=values[indices], c="black", s=50, zorder=2)
-
-        plt.close('all')
-        fig, axarr = plt.subplots(6, sharex=True, figsize=(15, 18))
-
-        plot_data(axis=axarr[0], data=self.ecg_data, title='Raw ECG measurements')
-        plot_data(axis=axarr[1], data=self.filtered_ecg_measurements, title='Filtered ECG measurements')
-        plot_data(axis=axarr[2], data=self.differentiated_ecg_measurements, title='Differentiated ECG measurements')
-        plot_data(axis=axarr[3], data=self.squared_ecg_measurements, title='Squared ECG measurements')
-        plot_data(axis=axarr[4], data=self.integrated_ecg_measurements, title='Integrated ECG measurements with QRS peaks marked (black)')
-        plot_points(axis=axarr[4], values=self.integrated_ecg_measurements, indices=self.qrs_peaks_indices)
-        plot_data(axis=axarr[5], data=self.ecg_data, title='Raw ECG measurements with QRS peaks marked (black)')
-        plot_points(axis=axarr[5], values=self.ecg_data_detected, indices=self.qrs_peaks_indices)
-
-        plt.tight_layout()
-        fig.savefig(self.plot_path)
-
-        if show_plot:
-            plt.show()
-
-        plt.close()
-
     """Tools methods."""
 
     def bandpass_filter(self, data, lowcut, highcut, signal_freq, filter_order):
@@ -308,3 +258,48 @@ class QRSDetectorOffline(object):
         if limit is not None:
             ind = ind[data[ind] > limit]
         return ind
+
+    ###########################################################################
+    """Results reporting methods."""
+
+    def print_detection_data(self):
+        """
+        Method responsible for printing the results.
+        """
+        print("qrs peaks indices")
+        print(self.qrs_peaks_indices)
+        print("noise peaks indices")
+        print(self.noise_peaks_indices)
+
+    def plot_detection_data(self, show_plot=False):
+        """
+        Method responsible for plotting detection results.
+        :param bool show_plot: flag for plotting the results and showing plot
+        """
+        def plot_data(axis, data, title='', fontsize=10):
+            axis.set_title(title, fontsize=fontsize)
+            axis.grid(which='both', axis='both', linestyle='--')
+            axis.plot(data, color="salmon", zorder=1)
+
+        def plot_points(axis, values, indices):
+            axis.scatter(x=indices, y=values[indices], c="black", s=50, zorder=2)
+
+        plt.close('all')
+        fig, axarr = plt.subplots(6, sharex=True, figsize=(15, 18))
+
+        plot_data(axis=axarr[0], data=self.ecg_data, title='Raw ECG measurements')
+        plot_data(axis=axarr[1], data=self.filtered_ecg_measurements, title='Filtered ECG measurements')
+        plot_data(axis=axarr[2], data=self.differentiated_ecg_measurements, title='Differentiated ECG measurements')
+        plot_data(axis=axarr[3], data=self.squared_ecg_measurements, title='Squared ECG measurements')
+        plot_data(axis=axarr[4], data=self.integrated_ecg_measurements, title='Integrated ECG measurements with QRS peaks marked (black)')
+        plot_points(axis=axarr[4], values=self.integrated_ecg_measurements, indices=self.qrs_peaks_indices)
+        plot_data(axis=axarr[5], data=self.ecg_data, title='Raw ECG measurements with QRS peaks marked (black)')
+        plot_points(axis=axarr[5], values=self.ecg_data_detected, indices=self.qrs_peaks_indices)
+
+        plt.tight_layout()
+        fig.savefig(self.plot_path)
+
+        if show_plot:
+            plt.show()
+
+        plt.close()

@@ -60,7 +60,6 @@ For butterworth lowpass filtering
 https://github.com/vinniefalco/DSPFilters
 
 
-
 ## Files
 
 ### example.cpp

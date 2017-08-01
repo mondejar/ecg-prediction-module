@@ -47,7 +47,7 @@ with open(sys.argv[2], 'rb') as f:
 
 # Show data
 begin = 5
-colors = ["green", "red", "pink", "yellow", "blue"];
+colors = ["green", "red", "pink", "yellow", "blue"]
 for r in range(0, len(r_peaks)):
 	plt.axvline(x = r_peaks[r], color = 'k', linestyle='--')
 	print 'R peak: ', r_peaks[r], ' predicted class : ', predicted_class[r]
