@@ -109,6 +109,8 @@ https://www.scipy.org/
 
 ### QRS_detector.py
 
+Based on project (https://github.com/c-labpl/qrs_detector/)
+
 ### QRS_classifier.py
 
 ### example.py
