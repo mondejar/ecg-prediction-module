@@ -81,7 +81,7 @@ Both subplots contains the R-peaks (vertical lines) and each beat is represented
 
 Plot from 220 record:
 
-![Ouput from 220](220.png)
+![Ouput from 228](228.png)
 
 
 ## Requirements:
