@@ -9,8 +9,8 @@ Mondejar Guerra, Victor M.
 from QRS_detector import QRSDetectorOffline
 from QRS_classifier import QRSClassifier
 import sys
-import csv
 import matplotlib.pyplot as plt
+import csv
 
 """
 Read signal from text file

@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS} "src/DSPFilters/include")
+include_directories(${PYTHON_INCLUDE_DIRS} "cpp/DSPFilters/include")
 
 #FIND_PACKAGE( Boost COMPONENTS program_options REQUIRED )
 #INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
@@ -16,13 +16,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 add_definitions("-std=c++11")
 
 file(GLOB DspFilters_SRC
-    "src/DSPFilters/source/*.cpp"
+    "cpp/DSPFilters/source/*.cpp"
 )
 
 file(GLOB FILES_SRC
-    "src/resample/*.cpp"
-	"src/resample/*.hpp"
-    "src/*.cpp"
+    "cpp/resample/*.cpp"
+	"cpp/resample/*.hpp"
+    "cpp/*.cpp"
 )
 
 add_executable (example ${DspFilters_SRC} 3rdparty/libsvm-3.22/svm.cpp ${FILES_SRC})

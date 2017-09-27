@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 QRS_classifier.py
     
@@ -11,7 +13,9 @@ import sys
 sys.path.insert(0, '../3rdparty/libsvm-3.22/python')
 from svmutil import *
 from scipy.signal import medfilt
-
+import scipy.stats
+import matplotlib.pyplot as plt
+import csv
 
 class QRSClassifier(object):
 
@@ -21,7 +25,7 @@ class QRSClassifier(object):
     The classes used in this module follow the standard AAMI-Recomendations:
     
         Class 	N 	SVEB 	VEB 	F 	Q
-        id 	0 	1 	2 	3 	4
+        id 	    0 	1 	2 	3 	4
         Class                                  id
         N: Normal                               0    
         SVEB: Supraventricular                  1
@@ -37,6 +41,11 @@ class QRSClassifier(object):
         self.ecg_data = ecg_data
         self.qrs_peaks_indices = qrs_peaks_indices
         self.n_classes = 4
+
+        # Size of the window surrounding each beat
+        self.window_l = 90
+        self.window_r = 90
+
         # Adjust R-peak at maximum (ML-II)
         self.adjust_qrs_at_max()
 
@@ -59,86 +68,86 @@ class QRSClassifier(object):
         for i in range(0, len(self.ecg_data)):
             self.ecg_data[i] = (self.ecg_data[i] - min_A) / (max_A - min_A)
 
-        # Compute RR-intervals
-        self.compute_RR_intervals()
+        # Compute RR-intervals descriptor of each beat
+        features_RR = self.compute_RR_intervals()
         
-        # Compute HOS (High Order Statistics)
-        
-        # Compute my morphology descriptor
-       
-        # Load SVM models
-        self.load_svm_models(svm_models_path)
+        # Compute the morphology descriptor of each beat
+        features_Morph = self.compute_Morphology()
+              
+        # Perform Z-score with the mean and std from training data      
+        features_RR = self.norm_z_score(features_RR, svm_models_path, '/RR_z_score.csv')
+        features_Morph = self.norm_z_score(features_Morph, svm_models_path, '/HOS_z_score.csv')
 
-        predictions = list()
+        # Load One-Against-One SVM models
+        svm_model_RR = svm_load_model(svm_models_path + '/svm_ovo_RR.model')
+        svm_model_Morph = svm_load_model(svm_models_path + '/svm_ovo_HOS.model')
         # Compute the feature and make the prediction
+        predictions = list()
+
         for i in range(0, len(self.qrs_peaks_indices)):
-            features = self.compute_features(i)
-            predicted_class, max_votes = self.predict_beat_one_vs_on_SVM(features)            
+            # predict RR
+            predicted_class_RR, acc, probs_RR = svm_predict([0], [features_RR[i]], svm_model_RR)
+            vote_class_RR = self.ovo_compute_prob_posteriori(probs_RR)
+            # predict HOS
+            predicted_class_Morph, acc, probs_Morph = svm_predict([0], [features_Morph[i]], svm_model_Morph)
+            vote_class_Morph = self.ovo_compute_prob_posteriori(probs_Morph)
+            
+            # fuse predictions
+            vote_fused = self.fuse_product_rule(vote_class_RR, vote_class_Morph)
+
+            predicted_class = np.argmax(vote_fused)
+            # Get the max class
+
             predictions.append(predicted_class)
         
         self.predictions = predictions
 
-    """
-    Given a beat feature perform the prediction from the 6 binary SVM models
-    and perform the majority voting to make the final prediction
-    """
-    def predict_beat_one_vs_on_SVM(self, features):
-        index = 0
-        output = [0] * 4
-        label = list()
-        label.append(1)
-        for k in range(0, self.n_classes-1):
-            for kk in range(k+1, self.n_classes):
-                prediction, acc, val = svm_predict(label, [features], self.models[index])
 
-                print 'prediction: ', prediction
-                if prediction[0] == 1:
-                    output[k] = output[k] + 1
-                else:
-                    output[kk] = output[kk] + 1
-                   
-                index = index + 1
-        
-        max_votes = 0
-        predicted_class = 0
-        for n in range(0, self.n_classes):
-            if output[n] > max_votes:
-                max_votes = output[n]
-                predicted_class = n
+    def fuse_product_rule(self, p1, p2):
+        return np.multiply(p1, p2)
 
-        # TODO: in case of draw??
-        return predicted_class, max_votes
+    " Compute the prob posteriori and accumulate over the corresponding class"
+    def ovo_compute_prob_posteriori(self, probs):
+        C1 = [0, 0, 0, 1, 1, 2]
+        C2 = [1, 2, 3, 2, 3, 3]
+
+        vote_class = [0] * self.n_classes
+        for j in range(0, 6):
+            vote_class[C1[j]] = vote_class[C1[j]] + (1 / (1 + np.exp(-probs[0][j])))
+            vote_class[C2[j]] = vote_class[C2[j]] + (1 / (1 + np.exp(probs[0][j])))
+        return vote_class
+
 
     """
-    Combine all the features used to make the descriptor
+    Z score normalization of the input data with the average and std given
     """
-    def compute_features(self, i):
-        features = list()
+    def norm_z_score(self, features, dir_path, z_score_file):
 
-        features.append(self.pre_R[i])
-        features.append(self.post_R[i])
-        features.append(self.local_R[i])
-        features.append(self.global_R[i])
+        mean_z, std_z = self.load_z_score_data(dir_path, z_score_file)
 
-        # Standardiation z-score
-        # TODO: load this data from file
-        media = [276.2640, 276.2435, 273.9888, 272.5610]
-        st_desviation = [75.4833, 74.1250, 60.6748, 57.1679]
-
-        for f in range(0, 4):
-            features[f] = (features[f] - media[f]) / st_desviation[f]
+        for f in range(0, len(features)):
+            for i in range(0, len(features[f])):
+                features[f][i] = (features[f][i] - mean_z[i]) / std_z[i]
 
     	return features
 
+    """ Load mean and std of z-score training data 
+        for each dimension of the features"
     """
-    Load the 6 one vs one SVM models 
-    """
-    def load_svm_models(self, svm_models_path):
-        svm_model_name = 'svm_ovo_RR_'
-        self.models = list()
-        for i in range(0, 6):
-            m = svm_load_model(svm_models_path + '/' + svm_model_name + str(i) + '.model')
-            self.models.append(m)
+    def load_z_score_data(self, dir_path, name):
+        
+        mean_z = []
+        std_z = []
+
+        with open(dir_path+ name, 'rb') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                mean_z.append(float(row[0]))
+                std_z.append(float(row[1]))
+
+        return mean_z, std_z
+
+
 
     """
     Adjust R-peaks to their nearest maximum. The signal ML-II usually contains R-peaks at maximum 
@@ -155,25 +164,27 @@ class QRSClassifier(object):
             index = index + 1
 
 
+    # Compute features RR interval for each  beat
     def compute_RR_intervals(self):
+        features_RR = list()
 
-        self.pre_R = np.array([], dtype=int)
-        self.post_R = np.array([], dtype=int)
-        self.local_R = np.array([], dtype=int)
-        self.global_R = np.array([], dtype=int)
+        pre_R = np.array([], dtype=int)
+        post_R = np.array([], dtype=int)
+        local_R = np.array([], dtype=int)
+        global_R = np.array([], dtype=int)
 
         # Pre_R and Post_R
-        self.pre_R = np.append(self.pre_R, 0)
-        self.post_R = np.append(self.post_R, self.qrs_peaks_indices[1] - self.qrs_peaks_indices[0])
+        pre_R = np.append(pre_R, 0)
+        post_R = np.append(post_R, self.qrs_peaks_indices[1] - self.qrs_peaks_indices[0])
 
         for i in range(1, len(self.qrs_peaks_indices)-1):
-            self.pre_R = np.append(self.pre_R, self.qrs_peaks_indices[i] - self.qrs_peaks_indices[i-1])
-            self.post_R = np.append(self.post_R, self.qrs_peaks_indices[i+1] - self.qrs_peaks_indices[i])
+            pre_R = np.append(pre_R, self.qrs_peaks_indices[i] - self.qrs_peaks_indices[i-1])
+            post_R = np.append(post_R, self.qrs_peaks_indices[i+1] - self.qrs_peaks_indices[i])
 
-        self.pre_R[0] = self.pre_R[1]
-        self.pre_R = np.append(self.pre_R, self.qrs_peaks_indices[-1] - self.qrs_peaks_indices[-2])  
+        pre_R[0] = pre_R[1]
+        pre_R = np.append(pre_R, self.qrs_peaks_indices[-1] - self.qrs_peaks_indices[-2])  
 
-        self.post_R = np.append(self.post_R, self.post_R[-1])
+        post_R = np.append(post_R, post_R[-1])
 
         # Local_R: AVG from last 10 pre_R values
         for i in range(0, len(self.qrs_peaks_indices)):
@@ -181,19 +192,74 @@ class QRSClassifier(object):
             avg_val = 0
             for j in range(-9, 0):
                 if j+i >= 0:
-                    avg_val = avg_val + self.pre_R[i+j]
+                    avg_val = avg_val + pre_R[i+j]
                     num = num +1
             if num > 0:
-                self.local_R = np.append(self.local_R, avg_val / float(num))
+                local_R = np.append(local_R, avg_val / float(num))
             else:
-                self.local_R = np.append(self.local_R, 0.0)
+                local_R = np.append(local_R, 0.0)
 
 	    # Global R AVG: from full past-signal
-	    self.global_R = np.append(self.global_R, self.pre_R[0])
+	    global_R = np.append(global_R, pre_R[0])
         for i in range(1, len(self.qrs_peaks_indices)):
             num = 0
             avg_val = 0
             for j in range( 0, i):
-                avg_val = avg_val + self.pre_R[j]
+                avg_val = avg_val + pre_R[j]
             num = i
-            self.global_R = np.append(self.global_R, avg_val / float(num))
+            global_R = np.append(global_R, avg_val / float(num))
+
+        for i in range(0, len(self.qrs_peaks_indices)):
+            features_RR.append([pre_R[i], post_R[i], local_R[i], global_R[i]])
+            
+        return features_RR
+
+    # Compute morphology of the beats
+    def compute_Morphology(self):
+        features_Morph = list()
+
+        n_intervals = 6
+        lag = int(round( (self.window_l + self.window_r )/ n_intervals))
+    
+        #self.display_signal(self.ecg_data)
+        for i in range(0, len(self.qrs_peaks_indices)):
+            if self.qrs_peaks_indices[i] > self.window_l and self.qrs_peaks_indices[i] < (len(self.ecg_data) - self.window_r):
+                beat = self.ecg_data[self.qrs_peaks_indices[i]-self.window_l:self.qrs_peaks_indices[i] + self.window_r]
+                #self.display_signal(beat)
+                
+                # Compute HOS (Hihg Order Statistics)
+                hos_skw, host_kur = self.compute_HOS(beat, n_intervals, lag)
+
+                features_Morph.append(hos_skw + host_kur)
+            else:
+                features_Morph.append([0] * (n_intervals * 2))        
+
+        return features_Morph
+
+    # Compute HOS (Hihg Order Statistics)
+    # Input param:  
+    # -n: number of intervals in which the beat is divided
+    # -lag: the length of each interval
+    # -beat: the hearth beat 
+    def compute_HOS(self, beat, n, lag):
+
+        hos_skewness = [0] * 6
+        hos_kurtosis = [0] * 6
+        for i in range(0, n):
+            pose = (lag * i)
+            interval = beat[pose:(pose + lag - 1)]
+            # Skewness  
+            hos_skewness[i] = scipy.stats.skew(interval, 0, True)
+            # Kurtosis
+            hos_kurtosis[i] = scipy.stats.kurtosis(interval, 0, False, True)
+
+        return hos_skewness, hos_kurtosis
+
+
+    
+    def display_signal(self, beat):
+        plt.plot(beat)
+        plt.ylabel('Signal')
+        plt.show()
+        
+

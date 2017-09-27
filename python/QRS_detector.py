@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 QRS_detector.py
 
