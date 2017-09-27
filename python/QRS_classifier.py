@@ -119,7 +119,13 @@ class QRSClassifier(object):
 
 
     """
-    Z score normalization of the input data with the average and std given
+    Z score normalization:
+    Input:
+        -features: input data
+        -dir_path: to search file
+        -z_score_file: file name with mean and std data
+    Ouput:
+        -features: z score normalized
     """
     def norm_z_score(self, features, dir_path, z_score_file):
 
