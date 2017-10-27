@@ -75,7 +75,7 @@ class QRSDetectorOffline(object):
         # Configuration parameters.
         self.signal_frequency = 360 #250  # Set ECG device frequency in samples per second here.
 
-        self.filter_lowcut = 0.0
+        self.filter_lowcut = 0.0001
         self.filter_highcut = 15.0
         self.filter_order = 1
 
