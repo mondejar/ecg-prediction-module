@@ -39,6 +39,8 @@ SVEB    Red
 VEB     Pink
 F       Yellow
 Q       Blue
+
+When the samples are not associated to a beat are displayed in black.
 """
 def show_signal_and_predictions(qrs_detector, qrs_classifier):
     # Show data
@@ -52,6 +54,7 @@ def show_signal_and_predictions(qrs_detector, qrs_classifier):
 
     fig, axarr = plt.subplots(2, sharex=True)
 
+    # Add beats and its predictions represented by different colours
     for r in range(0, len(qrs_detector.qrs_peaks_indices)):
         # Original ECG RAW
         R_peak = int(qrs_detector.qrs_peaks_indices_fs[r])
@@ -64,7 +67,6 @@ def show_signal_and_predictions(qrs_detector, qrs_classifier):
         axarr[0].axvline(x = R_peak, color = 'k', linestyle='--')
         axarr[0].plot(x, y, color=colors[predictions[r]], linewidth=2.5, linestyle="-")
         begin =  R_peak
-
 
         # Preprocesed ECG data sampled at 360Hz
         R_peak_360 = int(qrs_detector.qrs_peaks_indices[r])
@@ -79,8 +81,24 @@ def show_signal_and_predictions(qrs_detector, qrs_classifier):
         begin_360 =  R_peak_360
        
 
+    # Add from last detected peak to the final signal in black
+    last_point = len(qrs_detector.ecg_data_raw)
+    x = range(begin, last_point)
+    y = qrs_detector.ecg_data_raw[begin:last_point]
 
-        ## TODO: subplot 2 with procesed, norm and sampling signal at 360
+    axarr[0].set_title('ECG RAW', fontsize=16)
+    axarr[0].axvline(x = last_point, color = 'k', linestyle='--')
+    axarr[0].plot(x, y, color="black", linewidth=2.5, linestyle="-")
+
+    # Preprocesed ECG data sampled at 360Hz
+    last_point = len(qrs_detector.ecg_data)
+    x = range(begin_360, last_point)
+    y = qrs_detector.ecg_data[begin_360:last_point]
+
+    axarr[1].set_title('Filtered and normalized ECG 360Hz', fontsize=16)
+    axarr[1].axvline(x = last_point, color = 'k', linestyle='--')
+    axarr[1].plot(x, y, color="black", linewidth=2.5, linestyle="-")
+
 
     plt.show()
 

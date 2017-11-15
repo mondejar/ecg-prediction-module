@@ -5,7 +5,9 @@ QRS_classifier.py
     
 VARPA, University of Coruna
 Mondejar Guerra, Victor M.
-31 Jul 2017
+
+Created:            31 Jul 2017
+Last modification:  15 Nov 2017
 """
 import operator
 import numpy as np
@@ -25,7 +27,7 @@ class QRSClassifier(object):
     The classes used in this module follow the standard AAMI-Recomendations:
     
         Class 	N 	SVEB 	VEB 	F 	Q
-        id 	    0 	1 	2 	3 	4
+        id 	    0 	1 	      2 	3 	4
         Class                                  id
         N: Normal                               0    
         SVEB: Supraventricular                  1
@@ -46,11 +48,12 @@ class QRSClassifier(object):
         self.window_l = 90
         self.window_r = 90
 
+        predictions = np.zeros(len(qrs_peaks_indices), dtype=int)
+        do_preprocess = True
+
         # Adjust R-peak at maximum (ML-II)
         self.adjust_qrs_at_max()
 
-        # TODO: Do preprocess?
-        do_preprocess = True
 
         if do_preprocess:
             # median_filter1D
@@ -61,44 +64,47 @@ class QRSClassifier(object):
             for i in range(0, len(self.ecg_data)):
                 self.ecg_data[i] = self.ecg_data[i] - baseline2[i]
 
-            # Remove High Freqs
-        
+            # TODO Remove High Freqs?
 
 	    # Normalization min_A - max_A to range [0-1]
         for i in range(0, len(self.ecg_data)):
             self.ecg_data[i] = (self.ecg_data[i] - min_A) / (max_A - min_A)
 
-        # Compute RR-intervals descriptor of each beat
-        features_RR = self.compute_RR_intervals()
-        
-        # Compute the morphology descriptor of each beat
-        features_Morph = self.compute_Morphology()
-              
-        # Perform Z-score with the mean and std from training data      
-        features_RR = self.norm_z_score(features_RR, svm_models_path, '/RR_z_score.csv')
-        features_Morph = self.norm_z_score(features_Morph, svm_models_path, '/HOS_z_score.csv')
-
-        # Load One-Against-One SVM models
-        svm_model_RR = svm_load_model(svm_models_path + '/svm_ovo_RR.model')
-        svm_model_Morph = svm_load_model(svm_models_path + '/svm_ovo_HOS.model')
-        # Compute the feature and make the prediction
-        predictions = list()
-
-        for i in range(0, len(self.qrs_peaks_indices)):
-            # predict RR
-            predicted_class_RR, acc, probs_RR = svm_predict([0], [features_RR[i]], svm_model_RR)
-            vote_class_RR = self.ovo_compute_prob_posteriori(probs_RR)
-            # predict HOS
-            predicted_class_Morph, acc, probs_Morph = svm_predict([0], [features_Morph[i]], svm_model_Morph)
-            vote_class_Morph = self.ovo_compute_prob_posteriori(probs_Morph)
+        if len(qrs_peaks_indices) > 2:
+            # Compute RR-intervals descriptor of each beat
+            features_RR = self.compute_RR_intervals()
             
-            # fuse predictions
-            vote_fused = self.fuse_product_rule(vote_class_RR, vote_class_Morph)
+            # Compute the morphology descriptor of each beat
+            features_Morph = self.compute_Morphology()
+                
+            # Perform Z-score with the mean and std from training data      
+            features_RR = self.norm_z_score(features_RR, svm_models_path, '/RR_z_score.csv')
+            features_Morph = self.norm_z_score(features_Morph, svm_models_path, '/HOS_z_score.csv')
 
-            predicted_class = np.argmax(vote_fused)
-            # Get the max class
+            # Load One-Against-One SVM models
+            svm_model_RR = svm_load_model(svm_models_path + '/svm_ovo_RR.model')
+            svm_model_Morph = svm_load_model(svm_models_path + '/svm_ovo_HOS.model')
+            # Compute the feature and make the prediction
 
-            predictions.append(predicted_class)
+            for i in range(0, len(self.qrs_peaks_indices)):
+                # predict RR
+                predicted_class_RR, acc, probs_RR = svm_predict([0], [features_RR[i]], svm_model_RR)
+                vote_class_RR = self.ovo_compute_prob_posteriori(probs_RR)
+                # predict HOS
+                predicted_class_Morph, acc, probs_Morph = svm_predict([0], [features_Morph[i]], svm_model_Morph)
+                vote_class_Morph = self.ovo_compute_prob_posteriori(probs_Morph)
+                
+                # fuse predictions
+                vote_fused = self.fuse_product_rule(vote_class_RR, vote_class_Morph)
+
+                predicted_class = np.argmax(vote_fused)
+                # Get the max class
+
+                predictions[i] = predicted_class
+            
+        else:
+            print("Warning: at least three QRS beats must be detected on ECG signal to perform the classification and only " +  str(len(qrs_peaks_indices)) +
+                " was detected.\nCheck the segmentation values in QRS_detector.py")
         
         self.predictions = predictions
 
