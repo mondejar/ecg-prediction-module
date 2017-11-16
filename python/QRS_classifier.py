@@ -19,6 +19,9 @@ import scipy.stats
 import matplotlib.pyplot as plt
 import csv
 
+class ClassifierError(Exception):
+    pass
+
 class QRSClassifier(object):
 
     """
@@ -103,9 +106,10 @@ class QRSClassifier(object):
                 predictions[i] = predicted_class
             
         else:
-            print("Warning: at least three QRS beats must be detected on ECG signal to perform the classification and only " +  str(len(qrs_peaks_indices)) +
-                " was detected.\nCheck the segmentation values in QRS_detector.py")
-        
+            error_str = "Warning: at least three QRS beats must be detected on ECG signal to perform the classification and only " +\
+                str(len(qrs_peaks_indices)) + " was detected.\nCheck the segmentation values in QRS_detector.py"
+            raise ClassifierError(error_str)
+       
         self.predictions = predictions
 
 
