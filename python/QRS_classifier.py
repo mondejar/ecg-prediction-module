@@ -108,8 +108,8 @@ class QRSClassifier(object):
                 # fuse predictions
                 vote_fused = self.fuse_product_rule(vote_class_RR, vote_class_Morph)
 
-                predicted_class = np.argmax(vote_fused)
                 # Get the max class
+                predicted_class = np.argmax(vote_fused)
 
                 predictions[i] = predicted_class
             
