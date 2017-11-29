@@ -38,10 +38,15 @@ class QRSClassifier(object):
         F: Fusion                               3
         Q: unknown beat                         4
     """
-    def __init__(self, svm_models_path, ecg_data, qrs_peaks_indices, min_A, max_A):
+    def __init__(self, svm_models_path, ecg_data, qrs_peaks_indices, min_A, max_A, verbose):
         """
         QRSClassifier class initialization method.
+        :param string svm_models_path: path of the directory that contains the trained svm models
+        :param numpy.array ecg_data: the lead II data
         :param list qrs_peaks_indices: Positions in x-axis of the qrs peak indeices
+        :param int min_A: minimum amplitude value of the lead
+        :param int max_A: maximum amplitude value of the lead
+        :param bool verbose: flag for printing the results
         """   
         self.ecg_data = ecg_data
         self.qrs_peaks_indices = qrs_peaks_indices
@@ -57,6 +62,9 @@ class QRSClassifier(object):
         # Adjust R-peak at maximum (ML-II)
         self.adjust_qrs_at_max()
 
+        svm_options = ''
+        if verbose == False:
+            svm_options += '-q'
 
         if do_preprocess:
             # median_filter1D
@@ -91,10 +99,10 @@ class QRSClassifier(object):
 
             for i in range(0, len(self.qrs_peaks_indices)):
                 # predict RR
-                predicted_class_RR, acc, probs_RR = svm_predict([0], [features_RR[i]], svm_model_RR)
+                predicted_class_RR, acc, probs_RR = svm_predict([0], [features_RR[i]], svm_model_RR, svm_options)
                 vote_class_RR = self.ovo_compute_prob_posteriori(probs_RR)
                 # predict HOS
-                predicted_class_Morph, acc, probs_Morph = svm_predict([0], [features_Morph[i]], svm_model_Morph)
+                predicted_class_Morph, acc, probs_Morph = svm_predict([0], [features_Morph[i]], svm_model_Morph, svm_options)
                 vote_class_Morph = self.ovo_compute_prob_posteriori(probs_Morph)
                 
                 # fuse predictions
@@ -162,8 +170,6 @@ class QRSClassifier(object):
                 std_z.append(float(row[1]))
 
         return mean_z, std_z
-
-
 
     """
     Adjust R-peaks to their nearest maximum. The signal ML-II usually contains R-peaks at maximum 

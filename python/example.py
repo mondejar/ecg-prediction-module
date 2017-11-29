@@ -132,7 +132,7 @@ if __name__ == "__main__":
     qrs_classifier = QRSClassifier(svm_models_path = '../svm_models', \
                     ecg_data = qrs_detector.ecg_data, \
                     qrs_peaks_indices = qrs_detector.qrs_peaks_indices, \
-                    min_A = min_A, max_A = max_A) 
+                    min_A = min_A, max_A = max_A, verbose=False) 
 
     # qrs_detector.ecg_data                 signal resampled at 360Hz and filtered
     # qrs_classifier.predictions            class prediction for beat [0-4]
