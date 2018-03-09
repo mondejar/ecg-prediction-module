@@ -120,7 +120,6 @@ class QRSClassifier(object):
        
         self.predictions = predictions
 
-
     def fuse_product_rule(self, p1, p2):
         return np.multiply(p1, p2)
 
@@ -134,7 +133,6 @@ class QRSClassifier(object):
             vote_class[C1[j]] = vote_class[C1[j]] + (1 / (1 + np.exp(-probs[0][j])))
             vote_class[C2[j]] = vote_class[C2[j]] + (1 / (1 + np.exp(probs[0][j])))
         return vote_class
-
 
     """
     Z score normalization:
